@@ -13,7 +13,7 @@
 	<nav class="navbar navbar-default">
 		<div class="container">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="/" style="color: #ff0;">Swirkz</a> </div>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="/" style="color: #000; font-weight: 600;">Swirkz</a> </div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 				<ul class="nav navbar-nav">
 					<!-- <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">ROOM <span class="caret"></span></a>
@@ -46,24 +46,24 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="panel panel-default" style="background-color: #333; border: none;">
+				<div class="panel panel-default" style="background-image: url('assets/img/bg4.png'); border: none;">
 					<div class="panel-body">
 						<div class="list-group">
 							<div id="messages" style="height: 540px; overflow-y: scroll; padding-right: 10px;">
 								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #ff0;">User name <span class="label label-success">💎 Admin</span></h6>
+									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-success">💎 Admin</span></h6>
 									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
 								</div>
 								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #ff0;">User name <span class="label label-warning">❌ Banned</span></h6>
+									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-warning">❌ Banned</span></h6>
 									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
 								</div>
 								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #ff0;">User name <span class="label label-info">💼 Moderator</span></h6>
+									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-info">💼 Moderator</span></h6>
 									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
 								</div>
 								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #ff0;">User name </h6>
+									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name </h6>
 									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
 								</div>
 							</div>
@@ -74,7 +74,7 @@
 					</div>
 				</div>
 			</div>
-			<p style="text-align: center; color: #555;"> [b]<b>bold</b>[/b] [i]<i>italic</i>[/i] [u]<u>underline</u>[/u] [code]<code>code</code>[/code] <code>Type /help for more</code> </p>
+			<p style="text-align: center; color: #eee;"> [b]<b>bold</b>[/b] [i]<i>italic</i>[/i] [u]<u>underline</u>[/u] [code]<code>code</code>[/code] <code>Type /help for more</code> </p>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
