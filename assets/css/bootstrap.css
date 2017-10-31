@@ -1540,8 +1540,8 @@ samp {
 code {
   padding: 2px 4px;
   font-size: 90%;
-  color: #c7254e;
-  background-color: #f9f2f4;
+  color: #fff;
+  background-color: #000;
   border-radius: 4px;
 }
 kbd {
@@ -4886,7 +4886,7 @@ a.label:focus {
   background-color: #2180ac;
 }
 .label-success {
-  background-color: #77b300;
+  background-color: #60f;
 }
 .label-success[href]:hover,
 .label-success[href]:focus {
@@ -4900,11 +4900,11 @@ a.label:focus {
   background-color: #7a29a3;
 }
 .label-warning {
-  background-color: #ff8800;
+  background-color: #444;
 }
 .label-warning[href]:hover,
 .label-warning[href]:focus {
-  background-color: #cc6d00;
+  background-color: #444;
 }
 .label-danger {
   background-color: #cc0000;

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<title>Swirkz</title>
 </head>
-
 <body>
 	<nav class="navbar navbar-default">
 		<div class="container">
@@ -36,7 +34,8 @@
 					</li>-->
 					<li><a href="#">HOME</a> </li>
 					<li><a href="#">HELP</a> </li>
-                    <li><a>ROOM ID: 123123123</a></li>
+					<li><a><code><b>ROOM ID: 123123123</b></code></a>
+					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="https://github.com/pilotpirxie/swirkz"><i class="fa fa-github" aria-hidden="true"></i> CONTRIBUTE</a> </li>
@@ -47,34 +46,35 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-
-                <div class="panel panel-default" style="background-color: #333; border: none;">
-                  <div class="panel-body">
-                      <div class="list-group">
-                          <div id="messages" style="height: 540px; overflow-y: scroll; padding-right: 10px;">
-                              <div class="list-group-item">
-                                  <h6 class="list-group-item-heading" style="color: #ff0;">User name</h6>
-                                  <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                              </div>
-                              <div class="list-group-item">
-                                  <h6 class="list-group-item-heading" style="color: #ff0;">User name</h6>
-                                  <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                              </div>
-                          </div>
-                          <div id="userInput" style="margin-top: 20px;">
-                              <textarea id="userInputText" class="form-control" style="background-color: #111; color: #fff;" placeholder="Type your message here"></textarea>
-                          </div>
-
-
-                      </div>
-                  </div>
-                </div>
-
-
-
-
-
-            </div>
+				<div class="panel panel-default" style="background-color: #333; border: none;">
+					<div class="panel-body">
+						<div class="list-group">
+							<div id="messages" style="height: 540px; overflow-y: scroll; padding-right: 10px;">
+								<div class="list-group-item">
+									<h6 class="list-group-item-heading" style="color: #ff0;">User name <span class="label label-success">💎 Admin</span></h6>
+									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+								</div>
+								<div class="list-group-item">
+									<h6 class="list-group-item-heading" style="color: #ff0;">User name <span class="label label-warning">❌ Banned</span></h6>
+									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+								</div>
+								<div class="list-group-item">
+									<h6 class="list-group-item-heading" style="color: #ff0;">User name <span class="label label-info">💼 Moderator</span></h6>
+									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+								</div>
+								<div class="list-group-item">
+									<h6 class="list-group-item-heading" style="color: #ff0;">User name </h6>
+									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+								</div>
+							</div>
+							<div id="userInput" style="margin-top: 20px;">
+								<textarea id="userInputText" class="form-control" style="background-color: #111; color: #fff;" placeholder="Type your message here"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p style="text-align: center; color: #555;"> [b]<b>bold</b>[/b] [i]<i>italic</i>[/i] [u]<u>underline</u>[/u] [code]<code>code</code>[/code] <code>Type /help for more</code> </p>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
