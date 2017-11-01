@@ -1,12 +1,5 @@
-<<<<<<< HEAD
 Options +MultiViews
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
-=======
-# This Directive will make Apache look first
-# for "index_good.html" before looking for "index.html"
-DirectoryIndex index_good.php index.php
-Options -Indexes
->>>>>>> 82166f55fd6417d5edd951e6f5302fbc013f90d8
