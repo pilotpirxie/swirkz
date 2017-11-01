@@ -49,32 +49,29 @@
 				<div class="panel panel-default" style="background-image: url('assets/img/bg4.png'); border: none;">
 					<div class="panel-body">
 						<div class="list-group">
-							<div id="messages" style="height: 540px; overflow-y: scroll; padding-right: 10px;">
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-success">💎 Admin</span></h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-warning">❌ Banned</span></h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-info">💼 Moderator</span></h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name </h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
-							</div>
-							<div id="userInput" style="margin-top: 20px;">
-								<textarea id="userInputText" class="form-control" style="background-color: #111; color: #fff;" placeholder="Type your message here"></textarea>
+							<div style="height: 540px;">
+
+                                <form method="post" action="auth/create_new.php">
+                                    <label>Link to your chat</label>
+                                    <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="" readonly onclick="this.select()" value="<?="http://$_SERVER[HTTP_HOST]/" . $_GET['parameter']?>">
+                                    <hr>
+                                    <label>Description</label>
+                                    <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="(Optional) Description">
+                                    <label>Password</label>
+                                    <input type="text" name="password" class="form-control" style="background-color: #111; color: #fff;" placeholder="(Optional) Password">
+                                    <label>Show country flags</label>
+                                    <select class="form-control" name="flags" style="background-color: #111; color: #fff; display: block;">
+                                        <option value="0">Hide</option>
+                                        <option value="1">Show</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary form-control" style="margin-top: 20px; background-color: #0073ff; border: none;">Create new chat</button>
+                                </form>
+
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<p style="text-align: center; color: #eee;"> [b]<b>bold</b>[/b] [i]<i>italic</i>[/i] [u]<u>underline</u>[/u] [code]<code>code</code>[/code] <code>Type /help for more</code> </p>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
