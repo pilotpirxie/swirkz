@@ -1,23 +1,32 @@
 <?php
 session_start();
 
-if ( isset($_GET['parameter']) && !empty($_GET['parameter']) ) {
+// dependencies
+require_once 'AltoRouter.php';
 
-	// we need to check if this chat exist in past 180 minutes
-	// depends on this, user can create new room on this link
-	// or view chat (optionally with password input)
+// new instance of alto router
+$router = new AltoRouter();
 
-	// temp
-	$exist = false;
+// homepage
+$router->map( 'GET', '/', function() {
+    require_once 'home.php';
+});
 
-	if ( $exist ) {
-		// include or redirect to chat page
-		require_once('chat.php');
-	} else {
-		// create new page
-		require_once('new_chat.php');
-	}
+// create new chat
+$router->map( 'GET', '/new', function() {
+    require_once 'new-chat.php';
+});
+
+// go to exist chat
+$router->map( 'GET', '/[*:room_id]', function($room_id) {
+    require_once 'chat.php';
+});
+
+$match = $router->match();
+
+if( $match && is_callable( $match['target'] ) ) {
+	call_user_func_array( $match['target'], $match['params'] );
 } else {
-	// include or redirect to home page
-	require_once('home.php');
+	// no route was matched
+	header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
 }

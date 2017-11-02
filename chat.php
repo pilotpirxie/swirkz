@@ -34,7 +34,7 @@
 					</li>-->
 					<li><a href="#">HOME</a> </li>
 					<li><a href="#">HELP</a> </li>
-					<li><a><code><b>ROOM ID: <?=$_GET['parameter']?></b></code></a>
+					<li><a><code><b>ROOM ID: <?=$room_id?></b></code></a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
