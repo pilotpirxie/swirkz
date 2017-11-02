@@ -46,7 +46,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="panel panel-default" style="background-image: url('assets/img/bg4.png'); border: none;">
+				<div class="panel panel-default" style="background-image: url('../assets/img/bg4.png'); border: none;">
 					<div class="panel-body">
 						<div class="list-group">
 							<div style="height: 540px;">
