@@ -17,6 +17,11 @@ $router->map( 'GET', '/help', function() {
     require_once 'views/help.php';
 });
 
+// create new
+$router->map( 'POST', '/auth/create_new', function() {
+    // ...
+});
+
 // create new chat
 $router->map( 'GET', '/new/[*:room_id]', function($room_id) {
 	// check if room exist or was closed in past 180 minutes
