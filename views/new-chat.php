@@ -33,7 +33,7 @@
 						</ul>
 					</li>-->
 					<li><a href="/">HOME</a> </li>
-					<li><a href="help">HELP</a> </li>
+					<li><a href="/help">HELP</a> </li>
 					<li><a><code><b>ROOM ID: <?=$room_id?></b></code></a>
 					</li>
 				</ul>
@@ -51,7 +51,7 @@
 						<div class="list-group">
 							<div style="height: 540px;">
 
-                                <form method="post" action="/auth/create_new.php">
+                                <form method="post" action="auth/create_new.php">
                                     <label>Link to your chat</label>
                                     <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="" readonly onclick="this.select()" value="<?="http://$_SERVER[HTTP_HOST]/$room_id"?>">
                                     <hr>
