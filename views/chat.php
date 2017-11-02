@@ -33,7 +33,7 @@
 						</ul>
 					</li>-->
 					<li><a href="/">HOME</a> </li>
-					<li><a href="help">HELP</a> </li>
+					<li><a href="/help">HELP</a> </li>
 					<li><a><code><b>ROOM ID: <?=$room_id?></b></code></a>
 					</li>
 				</ul>
