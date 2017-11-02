@@ -2,7 +2,7 @@
 session_start();
 
 // dependencies
-require_once 'AltoRouter.php';
+require_once 'lib/AltoRouter.php';
 
 // new instance of alto router
 $router = new AltoRouter();
