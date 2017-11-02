@@ -34,7 +34,6 @@
 					</li>-->
 					<li><a href="/">HOME</a> </li>
 					<li><a href="help">HELP</a> </li>
-					<li><a><code><b>ROOM ID: <?=$room_id?></b></code></a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -52,19 +51,11 @@
 							<div style="height: 540px;">
 
                                 <form method="post" action="auth/create_new.php">
-                                    <label>Link to your chat</label>
-                                    <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="" readonly onclick="this.select()" value="<?="http://$_SERVER[HTTP_HOST]/$room_id"?>">
-                                    <hr>
-                                    <label>Description</label>
-                                    <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="(Optional) Description">
-                                    <label>Password</label>
-                                    <input type="text" name="password" class="form-control" style="background-color: #111; color: #fff;" placeholder="(Optional) Password">
-                                    <label>Show country flags</label>
-                                    <select class="form-control" name="flags" style="background-color: #111; color: #fff; display: block;">
-                                        <option value="0">Hide</option>
-                                        <option value="1">Show</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary form-control" style="margin-top: 20px; background-color: #0073ff; border: none;">Create new chat</button>
+                                    <h3>Help</h3>
+                                    <p>
+
+
+                                    </p>
                                 </form>
 
 							</div>
