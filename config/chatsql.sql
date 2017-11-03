@@ -32,6 +32,7 @@ CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
   `content` text NOT NULL,
   `room_id` int(11) NOT NULL,
+  `room_url` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL
@@ -45,13 +46,13 @@ CREATE TABLE `messages` (
 
 CREATE TABLE `room` (
   `id` int(11) NOT NULL,
-  `name` text NOT NULL,
+  `url` text NOT NULL,
   `description` text NOT NULL,
   `settings` text NOT NULL,
   `password` text NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `admin_id` int(11) NOT NULL,
-  `admin_ip` int(11) NOT NULL
+  `admin_ip` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
