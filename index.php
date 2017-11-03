@@ -1,8 +1,11 @@
 <?php
-session_start();
+if ( !isset($_SESSION) ){
+    session_start();
+}
 
 // dependencies
 require_once 'lib/AltoRouter.php';
+require_once 'config/db_conn.php';
 
 // new instance of alto router
 $router = new AltoRouter();
@@ -23,7 +26,7 @@ $router->map( 'GET', '/new/[*:room_id]', function($room_id) {
 	$Inquiry = "SELECT * FROM room WHERE name='$room_id'";
 	$Result = $Dbconnect->query($Inquiry);
 	if (mysqli_num_rows($Result)==0){
-		require_once 'views/new-chat.php'; 
+		require_once 'views/new-chat.php';
 	} else {
 		$Result_tab = $Result->fetch_assoc();
 		$Curr_date = date('Y-m-d H:i:s');
@@ -31,14 +34,14 @@ $router->map( 'GET', '/new/[*:room_id]', function($room_id) {
 		$Result = $Dbconnect->query($Inquiry);
 		$Result_tab = $Result->fetch_assoc();
 		mysqli_close($Dbconnect);
-		
+
 		$start = date_create($Curr_date);
 		$end = date_create($Result_tab['create_date']);
 		$diff=date_diff($end,$start);
 		$time_control = $diff->h*60;
 		$time_control += $diff->i;
 		if($time_control>=180) {
-			require_once 'views/new-chat.php'; 
+			require_once 'views/new-chat.php';
 		}
 		else {
 			header("Location: /".$room_id);
