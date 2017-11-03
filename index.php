@@ -17,16 +17,35 @@ $router->map( 'GET', '/help', function() {
     require_once 'views/help.php';
 });
 
-// create new
-$router->map( 'POST', '/auth/create_new', function() {
-    // ...
-});
-
 // create new chat
 $router->map( 'GET', '/new/[*:room_id]', function($room_id) {
+	$Dbconnect = mysqli_connect('localhost', 'root', '', 'swirkz');
+	$Inquiry = "SELECT * FROM room WHERE name='$room_id'";
+	$Result = $Dbconnect->query($Inquiry);
+	if (mysqli_num_rows($Result)==0){
+		require_once 'views/new-chat.php'; 
+	} else {
+		$Result_tab = $Result->fetch_assoc();
+		$Curr_date = date('Y-m-d H:i:s');
+		$Inquiry = "SELECT create_date FROM messages WHERE id=".$Result_tab['id']." ORDER BY create_date DESC LIMIT 1";
+		$Result = $Dbconnect->query($Inquiry);
+		$Result_tab = $Result->fetch_assoc();
+		mysqli_close($Dbconnect);
+		
+		$start = date_create($Curr_date);
+		$end = date_create($Result_tab['create_date']);
+		$diff=date_diff($end,$start);
+		$time_control = $diff->h*60;
+		$time_control += $diff->i;
+		if($time_control>=180) {
+			require_once 'views/new-chat.php'; 
+		}
+		else {
+			header("Location: /".$room_id);
+		}
+	}
 	// check if room exist or was closed in past 180 minutes
 	// then open or go to new-chat page
-	require_once 'views/new-chat.php';
 });
 
 // redirect to valid URL
