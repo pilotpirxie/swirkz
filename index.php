@@ -5,7 +5,6 @@ if ( !isset($_SESSION) ){
 
 // dependencies
 require_once 'lib/AltoRouter.php';
-require_once 'config/db_conn.php';
 
 // new instance of alto router
 $router = new AltoRouter();
@@ -22,16 +21,17 @@ $router->map( 'GET', '/help', function() {
 
 // create new chat
 $router->map( 'GET', '/new/[*:room_id]', function($room_id) {
-	$Inquiry = "SELECT TIMESTAMPDIFF(MINUTE,create_date,CURRENT_TIMESTAMP)as difr FROM messages WHERE room_url='$room_id' GROUP BY create_date HAVING difr<=180 ORDER BY create_date DESC LIMIT 1";
-	$mysqli = new mysqli('localhost', 'root', '', 'swirkz');
-	$Result = $mysqli->query($Inquiry);
-	if ($Result->num_rows==0){
+    // db info
+    require_once __DIR__ . '/config/db_conn.php';
+
+    // query that check if message exist and|or was created in last 180 minutes
+    $result = $mysqli->query("SELECT TIMESTAMPDIFF( MINUTE, create_date, CURRENT_TIMESTAMP ) as diff FROM messages WHERE room_url = '$room_id' GROUP BY create_date HAVING diff <= 180 ORDER BY create_date DESC LIMIT 1");
+    
+	if ($result->num_rows==0){
 		require_once 'views/new-chat.php';
 	} else {
 		header("Location: /".$room_id);
 	}
-	// check if room exist or was closed in past 180 minutes
-	// then open or go to new-chat page
 });
 
 // redirect to valid URL
