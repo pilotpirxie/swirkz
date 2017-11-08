@@ -51,9 +51,10 @@
 						<div class="list-group">
 							<div style="height: 540px;">
 
-                                <form method="post" action="auth/create_new.php">
+                                <form method="post" action="auth/create-new">
                                     <label>Link to your chat</label>
                                     <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="" readonly onclick="this.select()" value="<?="http://$_SERVER[HTTP_HOST]/$room_id"?>">
+                                    <input type="hidden" name="room_id" value="<?=$room_id?>">
                                     <hr>
                                     <label>Description</label>
                                     <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="(Optional) Description">

@@ -14,9 +14,32 @@ $router->map( 'GET', '/', function() {
     require_once 'views/home.php';
 });
 
-// homepage
+// help page
 $router->map( 'GET', '/help', function() {
     require_once 'views/help.php';
+});
+
+// create new post
+$router->map( 'POST', '/new/auth/create-new', function() {
+    if ( isset($_POST['room_id']) ){
+        $room_id = $_POST['room_id'];
+    } else {
+        header("Location: /");
+        exit;
+    }
+    // db info
+    require_once __DIR__ . '/config/db_conn.php';
+
+    // query that check if message exist and|or was created in last 180 minutes
+    $result = $mysqli->query("SELECT TIMESTAMPDIFF( MINUTE, create_date, CURRENT_TIMESTAMP ) as diff FROM messages WHERE room_url = '$room_id' GROUP BY create_date HAVING diff <= 180 ORDER BY create_date DESC LIMIT 1");
+
+	if ($result->num_rows == 0){
+		// here add new row into database
+
+	} else {
+        header("Location: /".$room_id);
+        exit;
+	}
 });
 
 // create new chat
@@ -26,11 +49,12 @@ $router->map( 'GET', '/new/[*:room_id]', function($room_id) {
 
     // query that check if message exist and|or was created in last 180 minutes
     $result = $mysqli->query("SELECT TIMESTAMPDIFF( MINUTE, create_date, CURRENT_TIMESTAMP ) as diff FROM messages WHERE room_url = '$room_id' GROUP BY create_date HAVING diff <= 180 ORDER BY create_date DESC LIMIT 1");
-    
-	if ($result->num_rows==0){
+
+	if ($result->num_rows == 0){
 		require_once 'views/new-chat.php';
 	} else {
 		header("Location: /".$room_id);
+        exit;
 	}
 });
 
@@ -58,9 +82,18 @@ $router->map( 'GET', '/new/', function($room_id) {
 
 // go to exist chat
 $router->map( 'GET', '/[*:room_id]', function($room_id) {
-	// check if room exist or was closed in past 180 minutes
-	// then open or redirect to /new/id page
-    require_once 'views/chat.php';
+    // db info
+    require_once __DIR__ . '/config/db_conn.php';
+
+    // query that check if message exist and|or was created in last 180 minutes
+    $result = $mysqli->query("SELECT TIMESTAMPDIFF( MINUTE, create_date, CURRENT_TIMESTAMP ) as diff FROM messages WHERE room_url = '$room_id' GROUP BY create_date HAVING diff <= 180 ORDER BY create_date DESC LIMIT 1");
+
+	if ($result->num_rows == 0){
+        header("Location: /new/".$room_id);
+        exit;
+	} else {
+        require_once 'views/chat.php';
+	}
 });
 
 $match = $router->match();
