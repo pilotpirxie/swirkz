@@ -1,10 +1,13 @@
 <?php
+
 if ( !isset($_SESSION) ){
     session_start();
 }
 
 // dependencies
 require_once 'lib/AltoRouter.php';
+require_once 'lib/SwirkzController.php';
+require_once 'config/db_conn.php';
 
 // new instance of alto router
 $router = new AltoRouter();
@@ -35,7 +38,7 @@ $router->map( 'POST', '/new/auth/create-new', function() {
 
 	if ($result->num_rows == 0){
 		// here add new row into database
-
+    var_dump($_POST);
 	} else {
         header("Location: /".$room_id);
         exit;
@@ -45,7 +48,6 @@ $router->map( 'POST', '/new/auth/create-new', function() {
 // create new chat
 $router->map( 'GET', '/new/[*:room_id]', function($room_id) {
     // db info
-    require_once __DIR__ . '/config/db_conn.php';
 
     // query that check if message exist and|or was created in last 180 minutes
     $result = $mysqli->query("SELECT TIMESTAMPDIFF( MINUTE, create_date, CURRENT_TIMESTAMP ) as diff FROM messages WHERE room_url = '$room_id' GROUP BY create_date HAVING diff <= 180 ORDER BY create_date DESC LIMIT 1");
