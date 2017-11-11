@@ -10,7 +10,7 @@ require_once 'lib/AltoRouter.php';
 require_once 'lib/SwirkzController.php';
 require_once 'lib/LocationController.php';
 
-// new instance of alto router
+// new instances
 $router = new AltoRouter();
 $swirkz = new Swirkz;
 $location = new LocationController;

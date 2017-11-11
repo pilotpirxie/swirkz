@@ -2,6 +2,13 @@
 
 class Swirkz
 {
+    /**
+     * Look up in database for last message in specified room, if it is in less than 180
+     * minutes then room are still live
+     * @param {mysqli} $link
+     * @param {int} $room_id
+     * @return {bool} status
+     */
     function roomExist($link, $room_id) {
       // query that check if message exist and|or was created in last 180 minutes
       $result = $link->query("SELECT TIMESTAMPDIFF( MINUTE, create_date, CURRENT_TIMESTAMP ) as diff FROM messages WHERE room_url = '$room_id' GROUP BY create_date HAVING diff <= 180 ORDER BY create_date DESC LIMIT 1");
@@ -13,6 +20,13 @@ class Swirkz
       }
     }
 
+    /**
+     * Insert into database new room
+     * @param {mysqli} $link
+     * @param {int} $room_id
+     * @param {array} $data
+     * @return {bool} status
+     */
     function createRoom($link, $room_id, $data) {
         $room_url = $room_id;
         $description = $data['description'];
