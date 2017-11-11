@@ -11,6 +11,11 @@ class Swirkz {
         return false;
       }
     }
+	
+	function createRoom($link, $room_id, $data) {
+	 // query that create room
+	 $result = $link->query("INSERT INTO `room` VALUES ('','$room_id','".$data['description']."','".json_encode($data['flags'])."','".$data['password']."',CURRENT_TIMESTAMP,'','')");
+	}
 }
 
 $swirkz = new Swirkz;

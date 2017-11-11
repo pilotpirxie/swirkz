@@ -36,7 +36,8 @@ $router->map( 'POST', '/new/auth/create-new', function() {
         header("Location: /".$room_id);
         exit;
     } else {
-        var_dump($_POST);
+        $swirkz->createRoom($mysqli, $room_id, $_POST);
+		header("Location: /".$room_id);
     }
 
 });
