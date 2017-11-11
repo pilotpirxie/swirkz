@@ -14,6 +14,7 @@ require_once 'lib/LocationController.php';
 $router = new AltoRouter();
 $swirkz = new Swirkz;
 $location = new LocationController;
+
 // homepage
 $router->map( 'GET', '/', function() {
     require_once 'views/home.php';
@@ -52,13 +53,12 @@ $router->map( 'GET', '/new/[*:room_id]', function($room_id) use ($mysqli, $swirk
 
 // redirect to valid URL
 $router->map( 'POST', '/new', function() use ($location) {
-	if ( isset($_POST['room_id']) && !empty($_POST['room_id']) ){
+    if ( isset($_POST['room_id']) && !empty($_POST['room_id']) ){
         $location::go("new/" . $_POST['room_id']);
-	} else {
-		header("Location: new/" . time() . 'r' . rand(1,100));
-		exit;
-	}
-
+    } else {
+        header("Location: new/" . time() . 'r' . rand(1,100));
+        exit;
+    }
 });
 
 $router->map( 'GET', '/new', function($room_id) use ($location) {
