@@ -33,13 +33,11 @@ $router->map( 'POST', '/new/auth/create-new', function() {
     require_once 'lib/SwirkzController.php';
     require_once 'config/db_conn.php';
     if ( $swirkz->roomExist($mysqli, $room_id) ){
-        $swirkz->createRoom($mysqli, $room_id, $_POST);
-		header("Location: /".$room_id);
+        header("Location: /".$room_id);
+        exit;
     } else {
         $swirkz->createRoom($mysqli, $room_id, $_POST);
 		header("Location: /".$room_id);
-		header("Location: /".$room_id);
-        exit;
     }
 
 });
@@ -89,10 +87,10 @@ $router->map( 'GET', '/[*:room_id]', function($room_id) {
     require_once 'lib/SwirkzController.php';
     require_once 'config/db_conn.php';
     if ( $swirkz->roomExist($mysqli, $room_id) ){
-		require_once 'views/chat.php';
-    } else {
-		header("Location: /new/".$room_id);
+        header("Location: /new/".$room_id);
         exit;
+    } else {
+        require_once 'views/chat.php';
     }
 });
 
