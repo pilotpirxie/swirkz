@@ -78,9 +78,9 @@ $router->map( 'GET', '/[*]/[*]', function() {
 // go to exist chat
 $router->map( 'GET', '/[*:room_id]', function($room_id) use ($mysqli, $swirkz) {
     if ( $swirkz->roomExist($mysqli, $room_id) ){
-		require_once 'views/chat.php';
+        require_once 'views/chat.php';
     } else {
-		header("Location: /new/".$room_id);
+        header("Location: /new/".$room_id);
         exit;
     }
 });
@@ -88,10 +88,10 @@ $router->map( 'GET', '/[*:room_id]', function($room_id) use ($mysqli, $swirkz) {
 $match = $router->match();
 
 if( $match && is_callable( $match['target'] ) ) {
-	call_user_func_array( $match['target'], $match['params'] );
+    call_user_func_array( $match['target'], $match['params'] );
 } else {
-	// no route was matched
-	header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
-	echo 'Error 404 - file not found';
-	exit;
+    // no route was matched
+    header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+    echo 'Error 404 - file not found';
+    exit;
 }
