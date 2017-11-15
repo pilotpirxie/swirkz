@@ -29,9 +29,9 @@ class Swirkz
      */
     function createRoom($link, $room_id, $data) {
         $room_url = $room_id;
-        $description = $data['description'];
+        $description = preg_replace('/[^A-Za-z0-9\-]/', '',strip_tags($data['description'],''));
         $settings = json_encode($data['flags']);
-        $password = $data['password'];
+        $password = preg_replace('/[^A-Za-z0-9\-]/', '',strip_tags($data['password'],''));
         $ip_address = $_SERVER['REMOTE_ADDR'];
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
             $ip_address = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));

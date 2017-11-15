@@ -9,11 +9,13 @@ require_once 'config/db_conn.php';
 require_once 'lib/AltoRouter.php';
 require_once 'lib/SwirkzController.php';
 require_once 'lib/LocationController.php';
+require_once 'lib/UserController.php';
 
 // new instances
 $router = new AltoRouter();
 $swirkz = new Swirkz;
 $location = new LocationController;
+$user = new UserController;
 
 // homepage
 $router->map( 'GET', '/', function() {
@@ -61,7 +63,7 @@ $router->map( 'POST', '/new', function() use ($location) {
     }
 });
 
-$router->map( 'GET', '/new', function($room_id) use ($location) {
+$router->map( 'GET', '/new', function() use ($location) {
     $location::go("new/" . time() . 'r' . rand(1,100));
 });
 
