@@ -1,3 +1,8 @@
+<?php
+if ( !isset($_SESSION) ){
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +14,100 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<title>Swirkz</title>
 </head>
+<style>
+		.options
+		{
+			display: none; 
+			position: fixed; 
+			z-index: 1; 
+			padding-top: 100px; 
+			left: 0;
+			top: 0;
+			width: 100%; 
+			height: 100%; 
+			background-color: rgba(0,0,0,0.4); 
+		}
+		.options-content
+		{
+			position: relative;
+			background-color: #fefefe;
+			margin: auto;
+			padding: 5px;
+			width: 30%;
+			animation-name: animatetop;
+			animation-duration: 0.5s;
+			background-color: #2196F3; 
+			border-radius: 6px;
+			text-align:center;
+			border:
+			border: 10px dotted #888888;
+		}
+		#login_input{
+			background-color: white; 
+			color: #2196F3;
+			border-radius: 6px;
+			text-align:center;
+		}
+		#login_button{
+			border-radius: 6px;
+			padding:3px;
+			margin:6px;
+			margin-top:15px;
+			color:#2196F3;
+			-border: none;
+		}
+		@keyframes animatetop
+			{
+			from {top:200px; opacity:0}
+			to {top:0; opacity:1}
+		}
+</style>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script>
+	  function close_pop() {
+    document.getElementById('options_window').style.display = "none";
+	}
+
+	function options() {
+
+		document.getElementById('options_window').style.display = "block";
+	}
+	
+	
+	
+	
+	
+	
+/*$("#login_form").submit(function(e) {
+
+    var url = "chat.php"; // the script where you handle the form input.
+
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: $("#login_form").serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+               alert(data); // show response from the php script.
+           }
+         });
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+	});*/
+</script>
 <body>
+	<div id="options_window" class="options">
+	  <div class="options-content">
+		<form method="post" action="<?=$room_id?>/login">
+		  <!--<span class="close" onclick="close_pop();">X</span>-->
+		  <h2>Login</h2>
+		  <input autofocus type="text" name="login_input" id="login_input"/>
+		  <button type="submit" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>
+		  </form>
+</button>
+		
+	  </div>
+	</div>
 	<nav class="navbar navbar-default">
 		<div class="container">
 			<div class="navbar-header">
@@ -35,6 +133,7 @@
 					<li><a href="/">HOME</a> </li>
 					<li><a href="/help">HELP</a> </li>
 					<li><a><code><b>ROOM ID: <?=$room_id?></b></code></a>
+					<li><a><code><b>LOGIN: <?=@$_SESSION['login']?></b></code></a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -68,7 +167,7 @@
 								</div>
 							</div>
 							<div id="userInput" style="margin-top: 20px;">
-								<textarea id="userInputText" class="form-control" style="background-color: #111; color: #fff;" placeholder="Type your message here"></textarea>
+								<textarea id="userInputText" class="form-control" style="background-color: #111; color: #fff;" placeholder="Type your message here."></textarea>
 							</div>
 						</div>
 					</div>
@@ -83,3 +182,13 @@
 </body>
 
 </html>
+<?php	
+	if(!isset($_SESSION['login']))
+	{
+		?>
+		<script>
+		document.getElementById('options_window').style.display = "block";
+		</script>
+		<?php
+	}
+?>
