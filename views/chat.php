@@ -72,10 +72,12 @@ if ( !isset($_SESSION) ){
 
 		document.getElementById('options_window').style.display = "block";
 	}
+	/*
+	$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').focus()
+})
 	
-	
-	
-	
+	*/
 	
 	/*
 $("#login_form").submit(function(e) {
@@ -96,10 +98,41 @@ $("#login_form").submit(function(e) {
 	});*/
 </script>
 <body>
+
+            <div class="container">
+  <!-- Trigger the modal with a button -->
+  <button type="button" id="login_buttonv2" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="display:none">Login</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="text-align:center">
+      <div class="modal-content" >
+		<form method="post" action="<?=$room_id?>/login">
+			<div class="modal-body">
+			<br>
+				<!--  <input autofocus onFocus="this.select()" type="text" value="Login" name="login_input" id="login_input"/> -->
+				<div class="input-group">
+					<span  class="input-group-addon" name="login_input" >Login</span>
+					<input autofocus id="msg" type="text" class="form-control" name="login_input" placeholder="Bananowy Janusz">
+				</div>
+		
+			</div>
+			<div class="modal-footer">
+			<button type="submit" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>
+		<!--	  <button type="submit" class="btn btn-default" data-dismiss="modal" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner<br> of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>-->
+			</div>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--
 	<div id="options_window" class="options">
 	  <div class="options-content">
 		<form method="post" action="<?=$room_id?>/login">
-		  <!--<span class="close" onclick="close_pop();">X</span>-->
 		  <h2>Login</h2>
 		  <input autofocus onFocus="this.select()" type="text" value="Login" name="login_input" id="login_input"/>
 		  <button type="submit" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>
@@ -108,6 +141,7 @@ $("#login_form").submit(function(e) {
 		
 	  </div>
 	</div>
+	-->
 	<nav class="navbar navbar-default">
 		<div class="container">
 			<div class="navbar-header">
@@ -178,7 +212,8 @@ $("#login_form").submit(function(e) {
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"                                                           -integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>-->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 
 </html>
@@ -188,7 +223,7 @@ $("#login_form").submit(function(e) {
 	{
 		?>
 		<script>
-		document.getElementById('options_window').style.display = "block";
+		document.getElementById('login_buttonv2').click();
 		</script>
 		<?php
 	}

@@ -89,6 +89,7 @@ $router->map( 'GET', '/[*:room_id]', function($room_id) use ($mysqli, $swirkz) {
 
 // redirect to room again
 $router->map( 'POST', '[*:room_id]/login', function($room_id) use ($mysqli,$location,$user) {
+	print_r($_POST);
     if ( isset($_POST['login_input']) && !empty($_POST['login_input']) ){
 		if($user->findUser($mysqli,$room_id)){
 			$_SESSION['currentRoom'] = substr($room_id,1);
