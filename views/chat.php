@@ -77,8 +77,8 @@ if ( !isset($_SESSION) ){
 	
 	
 	
-	
-/*$("#login_form").submit(function(e) {
+	/*
+$("#login_form").submit(function(e) {
 
     var url = "chat.php"; // the script where you handle the form input.
 
@@ -101,7 +101,7 @@ if ( !isset($_SESSION) ){
 		<form method="post" action="<?=$room_id?>/login">
 		  <!--<span class="close" onclick="close_pop();">X</span>-->
 		  <h2>Login</h2>
-		  <input autofocus type="text" name="login_input" id="login_input"/>
+		  <input autofocus onFocus="this.select()" type="text" value="Login" name="login_input" id="login_input"/>
 		  <button type="submit" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>
 		  </form>
 </button>
@@ -183,7 +183,8 @@ if ( !isset($_SESSION) ){
 
 </html>
 <?php	
-	if(!isset($_SESSION['login']))
+	//unset($_SESSION['login']);
+	if(!isset($_SESSION['login']) || $_SESSION['currentRoom']!=$room_id)
 	{
 		?>
 		<script>

@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
   `content` text NOT NULL,
-  `room_id` int(11) NOT NULL,
+  `room_id`  int(11) NOT NULL,
   `room_url` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

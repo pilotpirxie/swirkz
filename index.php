@@ -88,15 +88,21 @@ $router->map( 'GET', '/[*:room_id]', function($room_id) use ($mysqli, $swirkz) {
 });
 
 // redirect to room again
-$router->map( 'POST', '[*:room_id]/login', function($room_id) use ($location,$user) {
+$router->map( 'POST', '[*:room_id]/login', function($room_id) use ($mysqli,$location,$user) {
     if ( isset($_POST['login_input']) && !empty($_POST['login_input']) ){
-	  $_SESSION['login']=$_POST['login_input'];
-	  $location::go("$room_id");
-	  exit;
-    } else {
-		$_SESSION['login']="Guest". rand(1,100);
-        $location::go("$room_id");
-		exit;
+		if($user->findUser($mysqli,$room_id)){
+			$_SESSION['currentRoom'] = substr($room_id,1);
+			$location::go("$room_id");
+		}else{
+			if($user->createUser($mysqli,$room_id,$_POST['login_input'])){
+				$_SESSION['currentRoom'] = substr($room_id,1);
+				$location::go("$room_id");
+			} else {
+				$location::go("$room_id");
+			}	
+		} 
+	} else {
+			$location::go("$room_id");
     }
 });
 
