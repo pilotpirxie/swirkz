@@ -4,14 +4,14 @@ if ( !isset($_SESSION) ){
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link href="https://fonts.googleapis.com/css?family=Cutive+Mono|Roboto+Mono" rel="stylesheet">
 	<link rel="stylesheet"  href="assets/css/bootstrap.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
 	<title>Swirkz</title>
 </head>
 <style>
@@ -62,7 +62,6 @@ if ( !isset($_SESSION) ){
 			to {top:0; opacity:1}
 		}
 </style>
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script>
 	  function close_pop() {
     document.getElementById('options_window').style.display = "none";
@@ -72,45 +71,22 @@ if ( !isset($_SESSION) ){
 
 		document.getElementById('options_window').style.display = "block";
 	}
-	/*
-	$('#myModal').on('shown.bs.modal', function () {
-  $('#myInput').focus()
-})
-	
-	*/
-	
-	/*
-$("#login_form").submit(function(e) {
 
-    var url = "chat.php"; // the script where you handle the form input.
-
-    $.ajax({
-           type: "POST",
-           url: url,
-           data: $("#login_form").serialize(), // serializes the form's elements.
-           success: function(data)
-           {
-               alert(data); // show response from the php script.
-           }
-         });
-
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-	});*/
 </script>
-<body>
+<body style="height:100%">
+ <!-- BUTTON
+ <div class="container">
 
-            <div class="container">
-  <!-- Trigger the modal with a button -->
   <button type="button" id="login_buttonv2" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="display:none">Login</button>
 
-  <!-- Modal -->
+
   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" style="text-align:center">
       <div class="modal-content" >
-		<form method="post" action="<?=$room_id?>/login">
+		<form method="post" action="?=$room_id?>/login">
 			<div class="modal-body">
 			<br>
-				<!--  <input autofocus onFocus="this.select()" type="text" value="Login" name="login_input" id="login_input"/> -->
+				  <input autofocus onFocus="this.select()" type="text" value="Login" name="login_input" id="login_input"/>
 				<div class="input-group">
 					<span  class="input-group-addon" name="login_input" >Login</span>
 					<input autofocus id="msg" type="text" class="form-control" name="login_input" placeholder="Bananowy Janusz">
@@ -119,7 +95,7 @@ $("#login_form").submit(function(e) {
 			</div>
 			<div class="modal-footer">
 			<button type="submit" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>
-		<!--	  <button type="submit" class="btn btn-default" data-dismiss="modal" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner<br> of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>-->
+		<!--	  <button type="submit" class="btn btn-default" data-dismiss="modal" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner<br> of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>
 			</div>
 		</form>
       </div>
@@ -128,11 +104,9 @@ $("#login_form").submit(function(e) {
 </div>
 
 
-
-<!--
 	<div id="options_window" class="options">
 	  <div class="options-content">
-		<form method="post" action="<?=$room_id?>/login">
+		<form method="post" action="=?$room_id?>/login">
 		  <h2>Login</h2>
 		  <input autofocus onFocus="this.select()" type="text" value="Login" name="login_input" id="login_input"/>
 		  <button type="submit" id="login_button"><span style="float:left;text-align:center;width:240px;padding-top:24px;">Became the mighty owner of this login</span><img style="height:100px;float:left" src="assets/img/login_input.png"/></button>
@@ -200,30 +174,64 @@ $("#login_form").submit(function(e) {
 									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
 								</div>
 							</div>
-							<div id="userInput" style="margin-top: 20px;">
-								<textarea id="userInputText" class="form-control" style="background-color: #111; color: #fff;" placeholder="Type your message here."></textarea>
+							
+							<form>
+
+								<div class="input-group" id="userInput" style="margin-top: 20px;display:none">
+									<textarea id="messageInput" class="form-control custom-control" rows="3" style="background-color: #111; color: #fff;resize:none"></textarea>     
+									<span id="messageButton" class="input-group-addon btn btn-primary">Send</span>
+								</div>
+							</form>
+						
+							<div id="userLogin" style="margin-top: 20px;display:none">
+								<form method="post" action="<?=$room_id?>/login">
+									<div  style="background:transparent;border-bottom:0" class="input-group-addon" name="login_input" >Login
+										<input autofocus style="width:300px" id="msg" type="text" name="login_input" placeholder="Bananowy Janusz"></input>	
+										<button type="submit" id="login_button">Became the mighty owner of this login</button>
+									</div>
+								</form>
 							</div>
-						</div>
+						
 					</div>
 				</div>
 			</div>
 			<p style="text-align: center; color: #eee;"> [b]<b>bold</b>[/b] [i]<i>italic</i>[/i] [u]<u>underline</u>[/u] [code]<code>code</code>[/code] <code>Type /help for more</code> </p>
 		</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"  crossorigin="anonymous"></script>
+	<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"                                                           -integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>-->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
-
 </html>
+<script>
+   function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("POST", "demo_post2.asp", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("fname=Henry&lname=Ford");
+}
+
+</script>
 <?php	
-	//unset($_SESSION['login']);
 	if(!isset($_SESSION['login']) || $_SESSION['currentRoom']!=$room_id)
 	{
 		?>
 		<script>
-		document.getElementById('login_buttonv2').click();
+		//document.getElementById('login_buttonv2').click();
+		$('#userLogin').show();
+		</script>
+		<?php
+	}	else {
+		?>
+		<script>
+		$('#userInput').show();
 		</script>
 		<?php
 	}

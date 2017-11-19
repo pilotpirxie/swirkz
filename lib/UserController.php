@@ -37,7 +37,7 @@ class UserController
             $ip_address = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
 		}
 		
-		$result = $link->query("SELECT nickname from users WHERE nickname='$user' LIMIT 1");
+		$result = $link->query("SELECT nickname from users WHERE nickname='$user' AND room_id='$id_room[0]' LIMIT 1");
 		if ($result->num_rows > 0){
 			return false;
 		} else {
