@@ -16,22 +16,6 @@
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="/" style="color: #000; font-weight: 600;">Swirkz</a> </div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 				<ul class="nav navbar-nav">
-					<!-- <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">ROOM <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">CREATE NEW</a> </li>
-							<li><a href="#">JOIN</a> </li>
-							<li><a href="#">EXPORT</a> </li>
-							<li class="divider"></li>
-							<li><a href="#">EXIT</a> </li>
-						</ul>
-					</li>
-					<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">EDIT <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">SEARCH FOR</a> </li>
-							<li><a href="#">MUTE USER</a> </li>
-							<li><a href="#">CHANGE THEME</a> </li>
-						</ul>
-					</li>-->
 					<li><a href="/">HOME</a> </li>
 					<li><a href="/help">HELP</a> </li>
 					</li>
@@ -49,16 +33,12 @@
 					<div class="panel-body">
 						<div class="list-group">
 							<div style="height: 540px; padding: 150px;">
-
                                 <form method="post" action="new">
                                     <h3>Create or Join</h3>
                                     <label>Room ID</label>
                                     <input type="text" name="room_id" name="id" class="form-control" style="background-color: #111; color: #fff;" placeholder="Optional">
-
                                     <button type="submit" class="btn btn-primary form-control" style="margin-top: 20px; background-color: #0073ff; border: none;">Create or Join</button>
-
                                 </form>
-
 							</div>
 						</div>
 					</div>

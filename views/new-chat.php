@@ -16,22 +16,6 @@
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="/" style="color: #000; font-weight: 600;">Swirkz</a> </div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 				<ul class="nav navbar-nav">
-					<!-- <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">ROOM <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">CREATE NEW</a> </li>
-							<li><a href="#">JOIN</a> </li>
-							<li><a href="#">EXPORT</a> </li>
-							<li class="divider"></li>
-							<li><a href="#">EXIT</a> </li>
-						</ul>
-					</li>
-					<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">EDIT <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">SEARCH FOR</a> </li>
-							<li><a href="#">MUTE USER</a> </li>
-							<li><a href="#">CHANGE THEME</a> </li>
-						</ul>
-					</li>-->
 					<li><a href="/">HOME</a> </li>
 					<li><a href="/help">HELP</a> </li>
 					<li><a><code><b>ROOM ID: <?=$room_id?></b></code></a>
@@ -50,7 +34,6 @@
 					<div class="panel-body">
 						<div class="list-group">
 							<div style="height: 540px;">
-
                                 <form method="post" action="auth/create-new">
                                     <label>Link to your chat</label>
                                     <input type="text" name="description" class="form-control" style="background-color: #111; color: #fff;" placeholder="" readonly onclick="this.select()" value="<?="http://$_SERVER[HTTP_HOST]/$room_id"?>">
@@ -67,7 +50,6 @@
                                     </select>
                                     <button type="submit" class="btn btn-primary form-control" style="margin-top: 20px; background-color: #0073ff; border: none;">Create new chat</button>
                                 </form>
-
 							</div>
 						</div>
 					</div>
