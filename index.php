@@ -99,13 +99,33 @@ $router->map( 'POST', '[*:room_id]/login', function($room_id) use ($mysqli,$loca
 				$location::go("$room_id");
 			} else {
 				$location::go("$room_id");
-			}	
-		} 
+			}
+		}
 	} else {
 			$location::go("$room_id");
     }
 });
 
+// save nickname
+$router->map( 'POST', '[*:room_id]/save-nickname', function($room_id) use ($mysqli,$location,$swirkz) {
+    if ( isset($_POST['room_id'], $_POST['nickname']) && !empty($_POST['room_id']) && !empty($_POST['nickname']) ){
+
+        // grab info
+        $room_id = $_POST['room_id'];
+        $nickname = $_POST['nickname'];
+
+        if ( $swirkz->createUser($mysqli, $room_id, $nickname)){
+            echo '{"status":"success"}';
+            exit;
+        } else {
+            echo '{"status":"failed-2"}';
+            exit;
+        }
+    } else {
+        echo '{"status":"failed-1"}';
+        exit;
+    }
+});
 
 $match = $router->match();
 
