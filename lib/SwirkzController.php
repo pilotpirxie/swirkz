@@ -35,13 +35,16 @@ class Swirkz
         $settings = json_encode($data['flags']);
         $password = preg_replace('/[^A-Za-z0-9\-]/', '',strip_tags($data['password'],''));
         $ip_address = $_SERVER['REMOTE_ADDR'];
+        $room_token = hash('sha256', $room_url . time()) . rand(1, 100);
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
             $ip_address = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
         }
+		
         // query that create room
-        if ($link->query("INSERT INTO `room` (`id`, `url`, `description`, `settings`, `password`, `create_date`, `admin_id`, `admin_ip`) VALUES (NULL, '$room_url', '$description', '$settings', '$password', CURRENT_TIMESTAMP, '0', '$ip_address')") ){
+        if ($link->query("INSERT INTO `rooms` (`id`, `url`, `description`, `settings`, `password`, `create_date`, `admin_id`, `admin_ip`, `room_token`) VALUES (NULL, '$room_url', '$description', '$settings', '$password', CURRENT_TIMESTAMP, '0', '$ip_address', '$room_token')") ){
             $room_id = $link->insert_id;
-            if ($link->query("INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `create_date`, `status`) VALUES (NULL, 'Welcome, say `Hello`', '$room_id', '$room_url', '0', CURRENT_TIMESTAMP, '0')") ){
+            $message_token = hash('sha256', $room_url . '1' . time()) . rand(1, 100);
+            if ($link->query("INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, 'Welcome, say `Hello`', '$room_id', '$room_url', '0', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')") ){
                 return true;
             } else {
                 return false;
@@ -60,13 +63,13 @@ class Swirkz
     */
     function createUser($link, $room_url, $nickname){
         // search for room
-        if ( $result = $link->query("SELECT id FROM room WHERE url = '$room_url' ORDER BY create_date DESC LIMIT 1") ){
+        if ( $result = $link->query("SELECT id FROM rooms WHERE url = '$room_url' ORDER BY create_date DESC LIMIT 1") ){
             if ($result->num_rows > 0){
 
                 // grab numeric room_id
                 $room_data = $result->fetch_assoc();
                 $room_id = $room_data['id'];
-
+                $user_token = hash('sha256', $room_id . time()) . rand(1, 100);
                 // search for user
                 if ( $result = $link->query("SELECT id FROM users WHERE nickname = '$nickname' AND room_id = '$room_id' ORDER BY create_date DESC LIMIT 1") ){
 
@@ -86,7 +89,7 @@ class Swirkz
                             if ($result->num_rows === 0){
 
                                 // insert user and set to admin
-                                if ( $result = $link->query("INSERT INTO `users` (`id`, `nickname`, `ip`, `room_id`, `permissions`, `status`, `create_date`) VALUES (NULL, '$nickname', '$ip_address', '$room_id', '0', '0', CURRENT_TIMESTAMP)") ){
+                                if ( $result = $link->query("INSERT INTO `users` (`id`, `nickname`, `ip`, `room_id`, `room_url`, `permissions`, `status`, `create_date`, `user_token`) VALUES (NULL, '$nickname', '$ip_address', '$room_id', '$room_url', '0', '0', CURRENT_TIMESTAMP, '$user_token')") ){
                                     return true;
                                 } else {
                                     return false;
@@ -94,7 +97,7 @@ class Swirkz
                             } else {
 
                                 // insert common user
-                                if ( $result = $link->query("INSERT INTO `users` (`id`, `nickname`, `ip`, `room_id`, `permissions`, `status`, `create_date`) VALUES (NULL, '$nickname', '$ip_address', '$room_id', '1', '0', CURRENT_TIMESTAMP)") ){
+                                if ( $result = $link->query("INSERT INTO `users` (`id`, `nickname`, `ip`, `room_id`, `room_url`, `permissions`, `status`, `create_date`, `user_token`) VALUES (NULL, '$nickname', '$ip_address', '$room_id', '$room_url', '1', '0', CURRENT_TIMESTAMP, '$user_token')") ){
                                     return true;
                                 } else {
                                     return false;
@@ -116,4 +119,47 @@ class Swirkz
             return false;
         }
     }
+
+    /**
+     * Search in database for the information of user and room
+     *
+     * @param {mysqli} link
+     * @param {int} room_id
+     * @param {text} nickname
+     * @return {mixed} bool or data
+     */
+    function getSettings($link, $room_url, $nickname) {
+        // search for user
+        if ( $result = $link->query("SELECT * FROM users WHERE nickname = '$nickname' AND room_url = '$room_url' ORDER BY create_date DESC LIMIT 1") ){
+
+            // if user exist
+            if ($result->num_rows > 0){
+
+                // set user info for the future
+                $user_data = $result->fetch_assoc();
+                $room_id = $user_data['room_id'];
+
+                if ( $result = $link->query("SELECT * FROM rooms WHERE `url` = '$room_url' AND `id` = '$room_id' ORDER BY create_date DESC LIMIT 1") ) {
+                    // if room exist
+                    if ($result->num_rows > 0) {
+                        // get all room data
+                        $room_data = $result->fetch_assoc();
+                        // json string for return
+                        return json_encode(array('userData' => $user_data, 'roomData' => $room_data, 'status' => true));
+                    } else {
+                        echo 'bad';
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }
