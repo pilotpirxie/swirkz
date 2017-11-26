@@ -54,7 +54,7 @@
 							<form>
 								<div class="input-group" id="userInput" style="margin-top: 20px;display:none">
 									<textarea id="messageInput" class="form-control custom-control" rows="3" style="background-color: #111; color: #fff;resize:none"></textarea>
-									<span id="messageButton" class="input-group-addon btn btn-primary">Send</span>
+									<span id="messageButton" onclick="sendMessage()" class="input-group-addon btn btn-primary">Send</span>
 								</div>
 							</form>
 							<div id="userLogin" style="display:block">
@@ -76,20 +76,93 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script>
-        function saveNickname(){
+
+	var LOCAL_NICKNAME;
+	var LOCAL_USER_ID;
+    var LOCAL_SETTINGS;
+	
+    function saveNickname() {
+        // check if settings was not declared (in this case - saved)
+        if (typeof(LOCAL_SETTINGS) === "undefined") {
             let dataArray = {
                 nickname: $('#user_nickname').val(),
-                room_id: "<?=$room_id?>"
+                room_name: "<?=$room_id?>"
             };
-            $.post( "<?=$room_id?>/save-nickname", dataArray, function( data ) {
-              let response = JSON.parse(data);
-              if ( response.status === 'success' ){
-                  // on success
-              } else {
-                  // on fail
-              }
+            $.post("<?=$room_id?>/save-nickname", dataArray, function (data) {
+                let response = JSON.parse(data);
+                if (response.status) {
+                    console.log('Logged in');
+                    // on success
+					$('#userLogin').hide();
+					$('#userInput').show();
+                    console.log(response);
+                    LOCAL_SETTINGS = response;
+                } else {
+                    console.log('Something wrong');
+                    // on fail
+                }
             });
+
         }
+    }
+	<?php
+	if(!isset($_COOKIE['userName'],$_COOKIE['currentRoom'])){
+		?>findNickname();<?php
+	} else if($_COOKIE['currentRoom']!=$room_id){
+		?>findNickname();<?php
+	} else {
+		?>
+		$('#userLogin').hide();
+		$('#userInput').show();
+		<?php
+	}
+	?>
+	function findNickname() {
+        // check if settings was not declared (in this case - saved)
+        if (typeof(LOCAL_NICKNAME) === "undefined") {
+            let dataArray = {
+                room_name: "<?=$room_id?>"
+            };
+            $.post("<?=$room_id?>/find-nickname", dataArray, function (data) {
+				console.log(data);
+                let response = JSON.parse(data);
+                if (response.status) {
+                    console.log('Found');
+                    // on success
+					$('#userLogin').hide();
+					$('#userInput').show();
+					document.cookie = "userName = " + response.nickname;
+					document.cookie = "currentRoom = <?=$room_id?>";
+                } else {
+                    console.log('Not Found');
+                    // on fail
+                }
+            });
+
+        }
+    }
+	             
+	
+	 function sendMessage() {
+		   let dataArray = {
+                nickname: "<?=$_COOKIE['userName']?>",
+                room_name: "<?=$room_id?>",
+                message: $('#messageInput').val()
+            };
+            $.post("<?=$room_id?>/send-message", dataArray, function (data) {
+                if (data) {
+                    console.log('Send Message');
+					$('#messageInput').val('');
+                    // on success
+                } else {
+                    console.log('Something not right');
+                    // on fail
+                }
+            });
+
+	  }
+    
     </script>
+	
 </body>
 </html>
