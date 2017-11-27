@@ -33,7 +33,7 @@
 				<div class="panel panel-default" style="background-image: url('assets/img/bg4.png'); border: none;">
 					<div class="panel-body">
 						<div class="list-group">
-							<div id="messages" style="height: 540px; overflow-y: scroll; padding-right: 10px;">
+							<div id="messages" style="height: 540px; overflow-y: scroll;padding-right: 10px;">
 								<div class="list-group-item">
 									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-success">💎 Admin</span></h6>
 									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
@@ -54,7 +54,7 @@
 							<form>
 								<div class="input-group" id="userInput" style="margin-top: 20px;display:none">
 									<textarea id="messageInput" class="form-control custom-control" rows="3" style="background-color: #111; color: #fff;resize:none"></textarea>
-									<span id="messageButton" class="input-group-addon btn btn-primary">Send</span>
+									<span id="messageButton" onclick="sendMessage()" class="input-group-addon btn btn-primary">Send</span>
 								</div>
 							</form>
 							<div id="userLogin" style="display:block">
@@ -64,7 +64,6 @@
                                     <br><button class="btn btn-info form-control" type="submit" id="login_button" onclick="saveNickname()">Became the mighty owner of this login</button>
                                 </div>
 							</div>
-
 					</div>
 				</div>
 			</div>
@@ -80,7 +79,7 @@
 	var LOCAL_NICKNAME;
 	var LOCAL_USER_ID;
     var LOCAL_SETTINGS;
-
+	
     function saveNickname() {
         // check if settings was not declared (in this case - saved)
         if (typeof(LOCAL_SETTINGS) === "undefined") {
@@ -93,6 +92,12 @@
                 if (response.status) {
                     console.log('Logged in');
                     // on success
+					document.cookie = "userName = " + response.nickname;
+					document.cookie = "currentRoom = <?=$room_id?>";
+					$('#userLogin').hide();
+					$('#userInput').show();
+					getMessages();
+					$('#messages').animate({scrollTop: ($("#messages").height())*10}, 100);
                     console.log(response);
                     LOCAL_SETTINGS = response;
                 } else {
@@ -103,6 +108,126 @@
 
         }
     }
+	
+	
+	<?php
+	if(!isset($_COOKIE['userName'],$_COOKIE['currentRoom'])){
+		?>findNickname();<?php
+	} else if($_COOKIE['currentRoom']!=$room_id){
+		?>findNickname();<?php
+	} else {
+		?>
+		$('#userLogin').hide();
+		$('#userInput').show();
+		getMessages();
+		$('#messages').animate({scrollTop: ($("#messages").height())*10}, 100);
+		<?php
+	}
+	?>
+	function findNickname() {
+            let dataArray = {
+                room_name: "<?=$room_id?>"
+            };
+            $.post("<?=$room_id?>/find-nickname", dataArray, function (data) {
+                let response = JSON.parse(data);
+                if (response.status) {
+                    console.log('Found');
+                    // on success
+					$('#userLogin').hide();
+					$('#userInput').show();
+					getMessages();
+					$('#messages').animate({scrollTop: ($("#messages").height())*10}, 100);
+					document.cookie = "userName = " + response.nickname;
+					document.cookie = "currentRoom = <?=$room_id?>";
+                } else {
+                    console.log('Not Found');
+                    // on fail
+                }
+            });
+    }
+	             
+	
+	 function sendMessage() {
+		   let dataArray = {
+                nickname: "<?=$_COOKIE['userName']?>",
+                room_name: "<?=$room_id?>",
+                message: $('#messageInput').val()
+            };
+			console.log(dataArray);
+            $.post("<?=$room_id?>/send-message", dataArray, function (data) {
+                if (data) {
+                    console.log('Send Message');
+					$('#messageInput').val('');
+					getMessages();
+					$('#messages').animate({scrollTop: ($("#messages").height())*10}, 100);
+                    // on success
+                } else {
+                    console.log('Something not right');
+                    // on fail
+                }
+            });
+
+	  }
+	  
+	  
+	  
+    
+	function getMessages() {
+			let dataArray = {
+                room_name: "<?=$room_id?>"
+            };
+            $.post("<?=$room_id?>/get-messages", dataArray, function (data) {
+				
+				let response =JSON.parse(data);
+				if (response[0]['status']) {
+					 // on success
+                    console.log('getMessages');
+					var index=1;
+					var messages_inner = document.getElementById('messages');
+					messages_inner.innerHTML="<div class='list-group-item'><h6 class='list-group-item-heading' style='color: #fff; font-weight: 600;'>System </h6><p  class='list-group-item-text'>Welcome, say `Hello`.</p></div>";
+					while(typeof(response[index])!='undefined')
+					{
+						if(response[index]['status']=='0') {
+							messages_inner.innerHTML+="<div class='list-group-item'><h6 class='list-group-item-heading' style='color: #fff; font-weight: 600;'>"+response[index]['nickname']+" <span class='label label-success'>💎 Admin</span> "+response[index]['create_date']+"</h6><p class='list-group-item-text'>"+response[index]['content']+"</p></div>";
+						} else if(response[index]['status']=='1'){
+							messages_inner.innerHTML+="<div class='list-group-item'><h6 class='list-group-item-heading' style='color: #fff; font-weight: 600;'>"+response[index]['nickname']+"<span class='label label-success'>❌ Banned</span>"+response[index]['create_date']+"</h6><p class='list-group-item-text'>"+response[index]['content']+"</p></div>";
+						}else {
+							messages_inner.innerHTML+="<div class='list-group-item'><h6 class='list-group-item-heading' style='color: #fff; font-weight: 600;'>"+response[index]['nickname']+"</h6><p class='list-group-item-text'>"+response[index]['content']+"</p></div>";
+						}
+						index++;
+					}
+
+                   
+                } else {
+					 // on fail
+                    console.log('Something not messages');
+                  
+                }
+            });
+	}
+	
+	 function checkMessage() {
+		   let dataArray = {
+                room_name: "<?=$room_id?>",
+                lines: $('#messageInput').val()
+            };
+            $.post("<?=$room_id?>/check-message", dataArray, function (data) {
+                if (data) {             
+                    console.log('Check Message');
+					
+				
+                    // on success
+                } else {
+                    console.log('Something not Check');
+                    // on fail
+                }
+            });
+
+	  }
+	checkMessage();
+//	setInterval(checkMessage(),10);
+	
     </script>
+	
 </body>
 </html>
