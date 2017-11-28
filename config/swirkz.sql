@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Czas generowania: 23 Lis 2017, 23:48
+-- Czas generowania: 28 Lis 2017, 23:05
 -- Wersja serwera: 5.7.19
 -- Wersja PHP: 7.1.9
 
@@ -35,12 +35,13 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `room_id` int(11) NOT NULL,
   `room_url` text NOT NULL,
   `user_id` int(11) NOT NULL,
+  `user_nickname` text NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL,
   `message_token` text NOT NULL,
   `room_token` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   `admin_ip` text NOT NULL,
   `room_token` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -80,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_token` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
