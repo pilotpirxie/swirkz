@@ -27,7 +27,7 @@ $router->map( 'GET', '/help', function() {
     require_once 'views/help.php';
 });
 
-// create new room
+// create new post
 $router->map( 'POST', '/new/auth/create-new', function() use ($mysqli, $swirkz, $location) {
     if ( isset($_POST['room_id']) ){
         $room_id = $_POST['room_id'];
@@ -107,13 +107,14 @@ $router->map( 'POST', '[*:room_id]/login', function($room_id) use ($mysqli,$loca
 });
 
 // save nickname
-$router->map( 'POST', '[*:room_name]/save-nickname', function($room_name) use ($mysqli,$location,$swirkz) {
-    if ( isset($_POST['room_name'], $_POST['nickname']) && !empty($_POST['room_name']) && !empty($_POST['nickname']) ){
+$router->map( 'POST', '[*:room_id]/save-nickname', function($room_id) use ($mysqli,$location,$swirkz) {
+    if ( isset($_POST['room_id'], $_POST['nickname']) && !empty($_POST['room_id']) && !empty($_POST['nickname']) ){
 
         // grab info
-        $room_name = $_POST['room_name'];
+        $room_id = $_POST['room_id'];
         $nickname = $_POST['nickname'];
 
+<<<<<<< HEAD
         if ( $swirkz->createUser($mysqli, $room_name, $nickname)){
             echo $swirkz->getSettings($mysqli,$room_name, $nickname);
 			exit;
@@ -125,6 +126,11 @@ $router->map( 'POST', '[*:room_name]/save-nickname', function($room_name) use ($
                 echo '{"status":"failed-3"}';
                 exit;
             }
+=======
+        if ( $swirkz->createUser($mysqli, $room_id, $nickname)){
+            echo '{"status":"success"}';
+            exit;
+>>>>>>> parent of 3097f98... Downloading settings after success register
         } else {
             echo '{"status":"failed-2"}';
             exit;

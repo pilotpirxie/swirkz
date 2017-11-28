@@ -75,6 +75,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script>
+<<<<<<< HEAD
 
 	var LOCAL_NICKNAME;
 	var LOCAL_USER_ID;
@@ -83,10 +84,14 @@
     function saveNickname() {
         // check if settings was not declared (in this case - saved)
         if (typeof(LOCAL_SETTINGS) === "undefined") {
+=======
+        function saveNickname(){
+>>>>>>> parent of 3097f98... Downloading settings after success register
             let dataArray = {
                 nickname: $('#user_nickname').val(),
-                room_name: "<?=$room_id?>"
+                room_id: "<?=$room_id?>"
             };
+<<<<<<< HEAD
             $.post("<?=$room_id?>/save-nickname", dataArray, function (data) {
                 let response = JSON.parse(data);
                 if (response.status) {
@@ -104,9 +109,18 @@
                     console.log('Something wrong');
                     // on fail
                 }
+=======
+            $.post( "<?=$room_id?>/save-nickname", dataArray, function( data ) {
+              let response = JSON.parse(data);
+              if ( response.status === 'success' ){
+                  // on success
+              } else {
+                  // on fail
+              }
+>>>>>>> parent of 3097f98... Downloading settings after success register
             });
-
         }
+<<<<<<< HEAD
     }
 	
 	
@@ -227,6 +241,8 @@
 	checkMessage();
 //	setInterval(checkMessage(),10);
 	
+=======
+>>>>>>> parent of 3097f98... Downloading settings after success register
     </script>
 	
 </body>
