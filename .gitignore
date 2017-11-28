@@ -49,3 +49,7 @@ Temporary Items
 .idea/vcs.xml
 .idea/workspace.xml
 .idea/www.iml
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/dataSources/34ae63a9-d0aa-4b29-9785-37d97a06e9a1.xml
+.idea/sqldialects.xml

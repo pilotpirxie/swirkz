@@ -27,7 +27,7 @@ $router->map( 'GET', '/help', function() {
     require_once 'views/help.php';
 });
 
-// create new post
+// create new room
 $router->map( 'POST', '/new/auth/create-new', function() use ($mysqli, $swirkz, $location) {
     if ( isset($_POST['room_id']) ){
         $room_id = $_POST['room_id'];
@@ -107,18 +107,16 @@ $router->map( 'POST', '[*:room_id]/login', function($room_id) use ($mysqli,$loca
 });
 
 // save nickname
-$router->map( 'POST', '[*:room_id]/save-nickname', function($room_id) use ($mysqli,$location,$swirkz) {
-    if ( isset($_POST['room_id'], $_POST['nickname']) && !empty($_POST['room_id']) && !empty($_POST['nickname']) ){
+$router->map( 'POST', '[*:room_name]/save-nickname', function($room_name) use ($mysqli,$location,$swirkz) {
+    if ( isset($_POST['room_name'], $_POST['nickname']) && !empty($_POST['room_name']) && !empty($_POST['nickname']) ){
 
         // grab info
-        $room_id = $_POST['room_id'];
+        $room_name = $_POST['room_name'];
         $nickname = $_POST['nickname'];
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         if ( $swirkz->createUser($mysqli, $room_name, $nickname)){
             echo $swirkz->getSettings($mysqli,$room_name, $nickname);
-			exit;
+            exit;
             if ( ($settings = $swirkz->getSettings($mysqli,$room_name, $nickname)) !== false ){
                 echo $settings;
                 // echo '{"status":"success"}';
@@ -127,11 +125,6 @@ $router->map( 'POST', '[*:room_id]/save-nickname', function($room_id) use ($mysq
                 echo '{"status":"failed-3"}';
                 exit;
             }
-=======
-        if ( $swirkz->createUser($mysqli, $room_id, $nickname)){
-            echo '{"status":"success"}';
-            exit;
->>>>>>> parent of 3097f98... Downloading settings after success register
         } else {
             echo '{"status":"failed-2"}';
             exit;
@@ -141,100 +134,6 @@ $router->map( 'POST', '[*:room_id]/save-nickname', function($room_id) use ($mysq
         exit;
     }
 });
-
-// find nickname
-$router->map( 'POST', '[*:room_name]/find-nickname', function($room_name) use ($mysqli,$location,$swirkz) {
-    if ( isset($_POST['room_name']) && !empty($_POST['room_name'])) {
-
-        // grab info
-        $room_name = $_POST['room_name'];
-		
-		echo $swirkz->findUser($mysqli, $room_name);
-		exit;
-        if ( $nickname = $swirkz->findUser($mysqli, $room_name)  !== false){
-            echo $nickname;
-            exit;
-        } else {
-            echo '{"status":"failed-2"}';
-            exit;
-        }
-    } else {
-        echo '{"status":"failed-1"}';
-        exit;
-    }
-});
-
-
-// send message
-$router->map( 'POST', '[*:room_name]/send-message', function($room_name) use ($mysqli,$location,$swirkz) {
-    if ( isset($_POST['room_name'],$_POST['message'],$_POST['nickname']) && !empty($_POST['room_name']) && !empty($_POST['message']) && !empty($_POST['nickname'])) {
-		
-        // grab info
-        $room_name = $_POST['room_name'];
-        $message = $_POST['message'];
-        $nickname = $_POST['nickname'];
-		echo $swirkz->sendMessage($mysqli, $room_name,$message,$nickname);
-		exit;
-        if ( $sendmessage = $swirkz->sendMessage($mysqli, $room_name,$message,$nickname)  !== false){
-            echo $sendmessage;
-            exit;
-        } else {
-            echo '{"status":"failed-2"}';
-            exit;
-        }
-    } else {
-        echo '{"status":"failed-1"}';
-        exit;
-    }
-});
-
-// get messages
-$router->map( 'POST', '[*:room_name]/get-messages', function($room_name) use ($mysqli,$location,$swirkz) {
-    if ( isset($_POST['room_name']) && !empty($_POST['room_name'])){
-
-        // grab info
-        $room_name = $_POST['room_name'];
-		echo $messages = $swirkz->getMessages($mysqli, $room_name);
-		exit;
-        if ( $messages = $swirkz->getMessages($mysqli, $room_name) !== false){
-			echo $messages;
-=======
-        if ( $swirkz->createUser($mysqli, $room_id, $nickname)){
-            echo '{"status":"success"}';
-            exit;
->>>>>>> parent of 3097f98... Downloading settings after success register
-        } else {
-            echo '{"status":"failed-2"}';
-            exit;
-        }
-    } else {
-        echo '{"status":"failed-1"}';
-        exit;
-    }
-});
-
-
-// check message
-$router->map( 'POST', '[*:room_name]/check-message', function($room_name) use ($mysqli,$location,$swirkz) {
-    if ( isset($_POST['room_name']) && !empty($_POST['room_name'])){
-
-        // grab info
-        $room_name = $_POST['room_name'];
-		echo $check = $swirkz->checkMessage($mysqli, $room_name);
-		exit;
-        if ( $check = $swirkz->checkMessage($mysqli, $room_name) !== false){
-			echo $check;
-        } else {
-            echo '{"status":"failed-2"}';
-            exit;
-        }
-    } else {
-        echo '{"status":"failed-1"}';
-        exit;
-    }
-});
-
-
 
 $match = $router->match();
 
