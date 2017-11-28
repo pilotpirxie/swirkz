@@ -115,6 +115,7 @@ $router->map( 'POST', '[*:room_id]/save-nickname', function($room_id) use ($mysq
         $nickname = $_POST['nickname'];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         if ( $swirkz->createUser($mysqli, $room_name, $nickname)){
             echo $swirkz->getSettings($mysqli,$room_name, $nickname);
 			exit;
@@ -197,6 +198,11 @@ $router->map( 'POST', '[*:room_name]/get-messages', function($room_name) use ($m
 		exit;
         if ( $messages = $swirkz->getMessages($mysqli, $room_name) !== false){
 			echo $messages;
+=======
+        if ( $swirkz->createUser($mysqli, $room_id, $nickname)){
+            echo '{"status":"success"}';
+            exit;
+>>>>>>> parent of 3097f98... Downloading settings after success register
         } else {
             echo '{"status":"failed-2"}';
             exit;

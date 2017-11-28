@@ -87,6 +87,7 @@ class Swirkz
 
                                 // insert user and set to admin
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 if ( $result = $link->query("INSERT INTO `users` (`id`, `nickname`, `ip`, `room_id`, `room_url`, `permissions`, `status`, `create_date`, `user_token`) VALUES (NULL, '$nickname', '$ip_address', '$room_id', '$room_url', '0', '0', CURRENT_TIMESTAMP, '$user_token')") ){
 									//admin_id
 									if( $result = $link->query("SELECT id FROM users WHERE user_token='$user_token'") ){
@@ -119,6 +120,8 @@ class Swirkz
 								return false;
 							}
 =======
+=======
+>>>>>>> parent of 3097f98... Downloading settings after success register
                                 if ( $result = $link->query("INSERT INTO `users` (`id`, `nickname`, `ip`, `room_id`, `permissions`, `status`, `create_date`) VALUES (NULL, '$nickname', '$ip_address', '$room_id', '0', '0', CURRENT_TIMESTAMP)") ){
                                     return true;
                                 } else {
@@ -150,6 +153,7 @@ class Swirkz
             return false;
         }
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 	
 	  /**
@@ -333,6 +337,8 @@ class Swirkz
         }
     }
 
+=======
+>>>>>>> parent of 3097f98... Downloading settings after success register
 =======
 >>>>>>> parent of 3097f98... Downloading settings after success register
 }

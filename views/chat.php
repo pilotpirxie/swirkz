@@ -76,6 +76,7 @@
 
     <script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	var LOCAL_NICKNAME;
 	var LOCAL_USER_ID;
@@ -87,10 +88,14 @@
 =======
         function saveNickname(){
 >>>>>>> parent of 3097f98... Downloading settings after success register
+=======
+        function saveNickname(){
+>>>>>>> parent of 3097f98... Downloading settings after success register
             let dataArray = {
                 nickname: $('#user_nickname').val(),
                 room_id: "<?=$room_id?>"
             };
+<<<<<<< HEAD
 <<<<<<< HEAD
             $.post("<?=$room_id?>/save-nickname", dataArray, function (data) {
                 let response = JSON.parse(data);
@@ -110,6 +115,8 @@
                     // on fail
                 }
 =======
+=======
+>>>>>>> parent of 3097f98... Downloading settings after success register
             $.post( "<?=$room_id?>/save-nickname", dataArray, function( data ) {
               let response = JSON.parse(data);
               if ( response.status === 'success' ){
@@ -117,6 +124,7 @@
               } else {
                   // on fail
               }
+<<<<<<< HEAD
 >>>>>>> parent of 3097f98... Downloading settings after success register
             });
         }
@@ -242,6 +250,10 @@
 //	setInterval(checkMessage(),10);
 	
 =======
+>>>>>>> parent of 3097f98... Downloading settings after success register
+=======
+            });
+        }
 >>>>>>> parent of 3097f98... Downloading settings after success register
     </script>
 	
