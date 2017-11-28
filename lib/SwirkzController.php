@@ -31,20 +31,22 @@ class Swirkz
      * @return {bool} status
      */
     function createRoom($link, $room_url, $data) {
-        $description = preg_replace('/[^A-Za-z0-9\-]/', '',strip_tags($data['description'],''));
-        $settings = json_encode($data['flags']);
-        $password = preg_replace('/[^A-Za-z0-9\-]/', '',strip_tags($data['password'],''));
+        // useless
+        $description = '';
+        $settings = '';
+        $password = '';
+
         $ip_address = $_SERVER['REMOTE_ADDR'];
         $room_token = hash('sha256', $room_url . time()) . rand(1, 100);
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
             $ip_address = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
         }
-		
+
         // query that create room
         if ($link->query("INSERT INTO `rooms` (`id`, `url`, `description`, `settings`, `password`, `create_date`, `admin_id`, `admin_ip`, `room_token`) VALUES (NULL, '$room_url', '$description', '$settings', '$password', CURRENT_TIMESTAMP, '0', '$ip_address', '$room_token')") ){
             $room_id = $link->insert_id;
             $message_token = hash('sha256', $room_url . '1' . time()) . rand(1, 100);
-            if ($link->query("INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, 'Welcome, say `Hello`', '$room_id', '$room_url', '0', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')") ){
+            if ($link->query("INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `user_nickname`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, 'Welcome, say `Hello`', '$room_id', '$room_url', '0', 'Swirkz', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')") ){
                 return true;
             } else {
                 return false;
@@ -128,7 +130,7 @@ class Swirkz
      * @param {text} nickname
      * @return {mixed} bool or data
      */
-    function getSettings($link, $room_url, $nickname) {
+    public function getSettings($link, $room_url, $nickname) {
         // search for user
         if ( $result = $link->query("SELECT * FROM users WHERE nickname = '$nickname' AND room_url = '$room_url' ORDER BY create_date DESC LIMIT 1") ){
 
@@ -147,13 +149,86 @@ class Swirkz
                         // json string for return
                         return json_encode(array('userData' => $user_data, 'roomData' => $room_data, 'status' => true));
                     } else {
-                        echo 'bad';
                         return false;
                     }
                 } else {
                     return false;
                 }
 
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Search in database for the messages for specific room
+     *
+     * @param {mysqli} link
+     * @param {text} room_url
+     * @param {text} room_token
+     * @param {int} latest_message_count
+     * @return {array} messages
+     */
+    function getMessages($link, $room_url, $room_token, $latest_message_count) {
+        // get message count
+        if ( $result = $link->query("SELECT COUNT(id) as `msg_count` FROM messages WHERE room_token = '$room_token' AND room_url = '$room_url' AND `status` = '0' ") ){
+            // compare with client count
+            $messages_count = $result->fetch_assoc();
+            if ( $messages_count['msg_count'] !== $latest_message_count ) {
+                // if different, then get all messages and save into array
+                if ( $result = $link->query("SELECT * FROM messages WHERE room_token = '$room_token' AND room_url = '$room_url' AND `status` = '0' ") ){
+                    foreach ($result as $key => $value) {
+                        $messages[$key] = $value;
+                    }
+                    // return array with messages as json
+                    return json_encode(array('messages' => $messages, 'messages_count' => $messages_count['msg_count'], 'status' => 'new-messages'));
+                } else {
+                    return false;
+                }
+            } else {
+                return json_encode(array('status' => 'no-new-messages'));
+            }
+        }
+    }
+
+    /**
+     * Add new message into database
+     *
+     * @param {mysqli} link
+     * @param {text} room_url
+     * @param {text} room_token
+     * @param {text} content
+     * @param {int} user_id
+     * @param {text} user_token
+     * @param {text} nickname
+     * @return {bool} status
+     */
+    function sendMessage($link, $room_url, $room_token, $content, $user_id, $user_token, $nickname){
+        // count users with param credentials
+        if ( $result = $link->query("SELECT COUNT(id) as `user_count` FROM users WHERE id = '$user_id' AND user_token = '$user_token' AND `status` = '0' AND `room_url` = '$room_url' ") ){
+            // if user exist (is minimum one instance)
+            $user_count = $result->fetch_assoc();
+            if ( $user_count['user_count'] == 1 ) {
+                // get all settings and compare with client side info
+                $data = json_decode($this->getSettings($link, $room_url, $nickname), true);
+
+                if ( $data['roomData']['room_token'] == $room_token ){
+                    // if everything is good, add new message into db
+                    $room_id = $data['roomData']['id'];
+                    $message_token = hash('sha256', $room_id . time()) . rand(1, 100);
+                    $user_nickname = $data['userData']['nickname'];
+
+                    if ( $result = $link->query("INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `user_nickname`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, '$content', '$room_id', '$room_url', '$user_id', '$user_nickname', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')") ){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }

@@ -9,13 +9,11 @@ require_once 'config/db_conn.php';
 require_once 'lib/AltoRouter.php';
 require_once 'lib/SwirkzController.php';
 require_once 'lib/LocationController.php';
-require_once 'lib/UserController.php';
 
 // new instances
 $router = new AltoRouter();
 $swirkz = new Swirkz;
 $location = new LocationController;
-$user = new UserController;
 
 // homepage
 $router->map( 'GET', '/', function() {
@@ -27,48 +25,15 @@ $router->map( 'GET', '/help', function() {
     require_once 'views/help.php';
 });
 
-// create new room
-$router->map( 'POST', '/new/auth/create-new', function() use ($mysqli, $swirkz, $location) {
-    if ( isset($_POST['room_id']) ){
-        $room_id = $_POST['room_id'];
-    } else {
-        $location::go('/');
-    }
-
-    if ( $swirkz->roomExist($mysqli, $room_id) ){
-		header("Location: /".$room_id);
-    } else {
-        if ( $swirkz->createRoom($mysqli, $room_id, $_POST) ) {
-            $location::go("/$room_id");
-        }
-    }
-});
-
-// create new chat
-$router->map( 'GET', '/new/[*:room_id]', function($room_id) use ($mysqli, $swirkz, $location) {
-    if ( $swirkz->roomExist($mysqli, $room_id) ){
-        $location::go("/$room_id");
-    } else {
-        require_once 'views/new-chat.php';
-    }
-});
 
 // redirect to valid URL
 $router->map( 'POST', '/new', function() use ($location) {
     if ( isset($_POST['room_id']) && !empty($_POST['room_id']) ){
-        $location::go("new/" . $_POST['room_id']);
+        $location::go("/" . $_POST['room_id']);
     } else {
-        header("Location: new/" . time() . 'r' . rand(1,100));
+        header("Location: /" . time() . 'r' . rand(1,100));
         exit;
     }
-});
-
-$router->map( 'GET', '/new', function() use ($location) {
-    $location::go("new/" . time() . 'r' . rand(1,100));
-});
-
-$router->map( 'GET', '/new/[*]', function($room_id) use ($location) {
-    $location::go("new/" . time() . 'r' . rand(1,100));
 });
 
 // 404 error - all other matches
@@ -78,17 +43,23 @@ $router->map( 'GET', '/[*]/[*]', function() {
 });
 
 // go to exist chat
-$router->map( 'GET', '/[*:room_id]', function($room_id) use ($mysqli, $swirkz) {
+$router->map( 'GET', '/[*:room_id]', function($room_id) use ($mysqli, $swirkz, $location) {
     if ( $swirkz->roomExist($mysqli, $room_id) ){
         require_once 'views/chat.php';
     } else {
-        header("Location: /new/".$room_id);
-        exit;
+        $room_id = htmlspecialchars($room_id);
+        if ( $swirkz->roomExist($mysqli, $room_id) ){
+    		header("Location: /".$room_id);
+        } else {
+            if ( $swirkz->createRoom($mysqli, $room_id, $_POST) ) {
+                $location::go("/$room_id");
+            }
+        }
     }
 });
 
 // redirect to room again
-$router->map( 'POST', '[*:room_id]/login', function($room_id) use ($mysqli,$location,$user) {
+$router->map( 'POST', '[*:room_id]/login', function($room_id) use ($mysqli,$location) {
     if ( isset($_POST['login_input']) && !empty($_POST['login_input']) ){
 		if($user->findUser($mysqli,$room_id)){
 			$_SESSION['currentRoom'] = substr($room_id,1);
@@ -115,11 +86,8 @@ $router->map( 'POST', '[*:room_name]/save-nickname', function($room_name) use ($
         $nickname = $_POST['nickname'];
 
         if ( $swirkz->createUser($mysqli, $room_name, $nickname)){
-            echo $swirkz->getSettings($mysqli,$room_name, $nickname);
-            exit;
             if ( ($settings = $swirkz->getSettings($mysqli,$room_name, $nickname)) !== false ){
                 echo $settings;
-                // echo '{"status":"success"}';
                 exit;
             } else {
                 echo '{"status":"failed-3"}';
@@ -129,6 +97,60 @@ $router->map( 'POST', '[*:room_name]/save-nickname', function($room_name) use ($
             echo '{"status":"failed-2"}';
             exit;
         }
+    } else {
+        echo '{"status":"failed-1"}';
+        exit;
+    }
+});
+
+// download messages
+$router->map( 'POST', '[*:room_name]/get-messages', function($room_name) use ($mysqli, $location, $swirkz) {
+    if ( isset($_POST['room_name'], $_POST['room_token'], $_POST['latest_message_id']) && !empty($_POST['room_name']) && !empty($_POST['room_token']) && (!empty($_POST['latest_message_id']) || $_POST['latest_message_id'] == 0) ){
+
+        // grab info
+        $room_name = $_POST['room_name'];
+        $room_token = $_POST['room_token'];
+        $latest_message_id = $_POST['latest_message_id'];
+
+        if ( $swirkz->roomExist($mysqli, $room_name) ){
+            if ( ($messages = $swirkz->getMessages($mysqli, $room_name, $room_token, $latest_message_id)) !== false ){
+                 echo $messages;
+            } else {
+                echo '{"status":"failed-2"}';
+                exit;
+            }
+        } else {
+            echo '{"status":"failed-3"}';
+            exit;
+        }
+
+    } else {
+        echo '{"status":"failed-1"}';
+        exit;
+    }
+});
+
+// send message
+$router->map( 'POST', '[*:room_name]/send-message', function($room_name) use ($mysqli, $location, $swirkz) {
+    if ( isset($_POST['room_name'], $_POST['room_token'], $_POST['content'], $_POST['user_id'], $_POST['user_token'], $_POST['nickname']) && !empty($_POST['room_name']) && !empty($_POST['room_token']) && !empty($_POST['content']) && !empty($_POST['user_id']) && !empty($_POST['user_token']) && !empty($_POST['nickname']) ){
+
+        // grab info and make the secure
+        $room_name = $_POST['room_name'];
+        $room_token = $_POST['room_token'];
+        $content = $_POST['content'];
+        $user_id = $_POST['user_id'];
+        $user_token = $_POST['user_token'];
+        $nickname = $_POST['nickname'];
+
+        if ( $swirkz->roomExist($mysqli, $room_name) ){
+            if ( ($status = $swirkz->sendMessage($mysqli, $room_name, $room_token, $content, $user_id, $user_token, $nickname)) !== false ){
+                echo '{"status":"success"}';
+            } else {
+                echo '{"status":"failed-2"}';
+                exit;
+            }
+        }
+
     } else {
         echo '{"status":"failed-1"}';
         exit;

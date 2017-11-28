@@ -33,35 +33,18 @@
 				<div class="panel panel-default" style="background-image: url('assets/img/bg4.png'); border: none;">
 					<div class="panel-body">
 						<div class="list-group">
-							<div id="messages" style="height: 540px; overflow-y: scroll; padding-right: 10px;">
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-success">💎 Admin</span></h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-warning">❌ Banned</span></h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name <span class="label label-info">💼 Moderator</span></h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
-								<div class="list-group-item">
-									<h6 class="list-group-item-heading" style="color: #fff; font-weight: 600;">User name </h6>
-									<p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-								</div>
+							<div id="chatWindow" style="height: 540px; overflow-y: scroll; padding-right: 10px;">
+								<h3 style="text-align: center; margin-top: 100px;">Please login to view and respond to the chat</h3>
 							</div>
-							<form>
-								<div class="input-group" id="userInput" style="margin-top: 20px;display:none">
-									<textarea id="messageInput" class="form-control custom-control" rows="3" style="background-color: #111; color: #fff;resize:none"></textarea>
-									<span id="messageButton" class="input-group-addon btn btn-primary">Send</span>
-								</div>
-							</form>
 							<div id="userLogin" style="display:block">
-                                <div style="background:transparent; border-bottom:0;" class="input-group-addon" name="login_input" >
+                                <div style="background:transparent; border-bottom:0;" class="input-group-addon" id="login_form" >
                                     <p style="text-align: left;">Login</p>
-                                    <input class="form-control" autofocus id="user_nickname" type="text" name="login_input" placeholder="e.g. Bananowy Janusz"></input>
+                                    <input class="form-control" autofocus id="user_nickname" type="text" name="login_input" placeholder="e.g. Bananowy Janusz">
                                     <br><button class="btn btn-info form-control" type="submit" id="login_button" onclick="saveNickname()">Became the mighty owner of this login</button>
+                                </div>
+                                <div style="display: none; background:transparent; border-bottom:0;" class="input-group-addon" id="content_form" >
+                                    <textarea class="form-control" autofocus id="content_input" type="text" name="content_input" placeholder="e.g. Welcome Darkness, my old friend!"></textarea>
+                                    <br><button class="btn btn-info form-control" type="submit" id="login_button" onclick="sendMessage()">Send</button>
                                 </div>
 							</div>
 
@@ -77,32 +60,130 @@
 
     <script>
 
-	var LOCAL_NICKNAME;
-	var LOCAL_USER_ID;
     var LOCAL_SETTINGS;
+	var LATEST_MESSAGE_COUNT = 0;
+	const INTERVAL = 500;
 
-    function saveNickname() {
+	// bind user_nickname to enter key
+	$('#user_nickname').on('keyup', function(e) {
+	    if (e.which == 13 && ! e.shiftKey) {
+	    	saveNickname();
+	    }
+	});
+
+	// send signal to add user
+    function saveNickname () {
         // check if settings was not declared (in this case - saved)
         if (typeof(LOCAL_SETTINGS) === "undefined") {
             let dataArray = {
                 nickname: $('#user_nickname').val(),
                 room_name: "<?=$room_id?>"
             };
+			// send signal to add user and save nickname if needed
             $.post("<?=$room_id?>/save-nickname", dataArray, function (data) {
                 let response = JSON.parse(data);
-                if (response.status) {
+                if (response.status == true) {
                     console.log('Logged in');
-                    // on success
                     console.log(response);
                     LOCAL_SETTINGS = response;
+
+					// hide login form and show message form
+					$('#login_form').hide();
+					$('#content_form').show();
+					startListening();
                 } else {
-                    console.log('Something wrong');
-                    // on fail
+                    if ( response.status == 'failed-2' ){
+						alert('User already exist');
+					} else {
+						console.log('Something wrong');
+					}
                 }
             });
-
         }
     }
+
+	// listen for differences on database
+	function startListening () {
+		// if user download configuration
+		if (typeof(LOCAL_SETTINGS) !== "undefined") {
+			// start loop for downloading messages
+			setInterval(function (){
+				let dataArray = {
+	                latest_message_id: LATEST_MESSAGE_COUNT,
+					room_name: LOCAL_SETTINGS.roomData.url,
+					room_token: LOCAL_SETTINGS.roomData.room_token
+	            };
+				// download messages from current room if number of messages is different on client and server
+				$.post("<?=$room_id?>/get-messages", dataArray, function (data) {
+					let response = JSON.parse(data);
+					// console.log(response);
+					if (response.status === 'new-messages') {
+						// if messages was changed
+						LATEST_MESSAGE_COUNT = response.messages_count;
+
+						// clear before append all messages
+						$('#chatWindow').html('');
+
+						// foreach messages in array from JSON
+						response.messages.forEach(function(element, index, array){
+							let userType = '';
+							if ( element.user_id == LOCAL_SETTINGS.roomData.admin_id ){
+								userType = "<span class='label label-success'>💎 Admin</span>";
+							}
+							if ( element.user_id == 0 ){
+								userType = "<span class='label label-success'>💡 System</span>";
+							}
+
+							// some magic with message content
+							let messageContent = element.content;
+
+							$('#chatWindow').append("<div class='list-group-item'><h6 class='list-group-item-heading' style='color: #fff; font-weight: 600;'>"+userType + " " + element.user_nickname+" <i>"+element.create_date+"</i></h6><p class='list-group-item-text'><br>"+messageContent+"</p></div>");
+						});
+
+						console.log('Downloaded messages');
+					} else if ( response.status === 'no-new-messages' ) {
+						console.log('There is no new messages');
+					} else {
+						console.log('Something wrong');
+					}
+				});
+
+			}, INTERVAL);
+		}
+	}
+
+	// bind content_input to enter key
+	$('#content_input').on('keyup', function(e) {
+	    if (e.which == 13 && ! e.shiftKey) {
+	    	sendMessage();
+	    }
+	});
+
+	// send new message to the db
+	function sendMessage(){
+		let dataArray = {
+			content: $('#content_input').val(),
+			room_name: LOCAL_SETTINGS.roomData.url,
+			room_token: LOCAL_SETTINGS.roomData.room_token,
+			user_id: LOCAL_SETTINGS.userData.id,
+			user_token: LOCAL_SETTINGS.userData.user_token,
+			nickname: LOCAL_SETTINGS.userData.nickname
+		};
+
+		console.log(dataArray);
+
+		// clear textarea and focus it
+		$('#content_input').val('');
+		$('#content_input').focus();
+
+		// send new message
+		$.post("<?=$room_id?>/send-message", dataArray, function (data) {
+			let response = JSON.parse(data);
+			console.log(response);
+		});
+	}
+
+
     </script>
 </body>
 </html>
