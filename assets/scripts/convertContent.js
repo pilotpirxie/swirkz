@@ -1,12 +1,34 @@
 
 function convertContent(content) {
+		let emojis ={
+			":)":"&#x1F601;",
+			":*": "&#x1F618;",
+			"XD": "&#x1F606;",
+			"xD": "&#x1F606;",
+			"Xd": "&#x1F606;",
+			"xd": "&#x1F606;",
+			"<3": "&#x2764;",
+			";)": "&#x1F609;",
+			":P": "&#x1F60B;",
+			":p": "&#x1F60B;",
+			":D": "&#x1F603;",
+			":d": "&#x1F603;",
+			":(": "&#x1F61E;",
+			";(": "&#x1F622;",
+			":O": "&#x1F632;",
+			":o": "&#x1F632;"
+		}
+	
+	
+	
 	content = marks('b');
 	content = marks('i');
 	content = marks('u');
 	content = marks('code');
+	content = links('https://');
+	content = links('http://');
+	content = emoji_easy();
 	content = emoji();
-	//content = links('https://');
-	//content = links('http://');
 	
 	function marks(mark) {
 		do
@@ -74,7 +96,24 @@ function convertContent(content) {
 		}while(content_temp!=content);
 	return content;
 	}
-	/*
+	
+	
+	function emoji_easy(){
+		let len = Object.keys(emojis).length;
+			   for(let i=0;i<len;i++)
+			   {
+					console.log(i);
+				   e_from=Object.keys(emojis)[i];
+				   e_to="<span class='emoji'>"+emojis[Object.keys(emojis)[i]]+"</span>";
+				   while(content.includes(e_from)){
+							content = content.replace(e_from,e_to);  
+				   }
+			   }
+		return content;	
+	}
+	
+	
+	
 	function links(start) {
 		
 		var index=0;
@@ -90,7 +129,7 @@ function convertContent(content) {
 			link_2="<a target='_blank' href='"+link+"'>"+link+"</a>";
 			console.log(link);
 			console.log(link_2);
-			//content=content.replace(link,link_2);
+			content=content.replace(link,link_2.toUpperCase());
 			index+=35;
 			console.log(index);
 		}
@@ -98,7 +137,7 @@ function convertContent(content) {
 	}
 	
 	//document.getElementById('divek').innerHTML = content;
-	*/
+	
 	return content;
 }
 
