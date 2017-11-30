@@ -43,7 +43,6 @@ function convertContent(content) {
 		}	
 		return content;	
 	}
-	
 	function marks(mark) {
 		do
 		{
@@ -142,7 +141,7 @@ function convertContent(content) {
 				link+=content[index+i];
 				i++;
 			}
-			//YT
+			//if YT
 			if(link.includes(yt)) {	
 			link_3=link.replace(start+yt,start.toUpperCase()+yt.toUpperCase());
 			link_a='<a target="_blank" href="'+link_3+'">'+link_3+'</a>';
