@@ -34,11 +34,8 @@
                     <div class="list-group">
                         <div style="height: 540px;">
                                 <h3>Emoji</h3>
-                                <p>
-									If you want to insert emoji into message you just have to copy and paste unicode for example: lol 'your' funny U+1F680 and it will show: lol 'your' funny     &#x1F680;. <br>
-									Of course for emoji like XD or :p you dont have to insert unicode you can write them just like that and page will turn them into emoji by itself &#x1F609;.<br><br>
-										<a target="_blank" href="https://apps.timwhitlock.info/emoji/tables/unicode">Website with full list of emoji</a>
-
+                                <p
+                                You can use emojis UTF-8 and emojis abbreviations like <pre>:)</pre>, <pre>:D</pre> and many others. You may also want to insert some top-notch BBCODEs e.g. <pre>[b]</pre>, <pre>[u]</pre>.
                                 </p>
                         </div>
                     </div>

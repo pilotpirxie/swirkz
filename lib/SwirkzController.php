@@ -31,11 +31,6 @@ class Swirkz
      * @return {bool} status
      */
     function createRoom( $link, $room_url, $data ) {
-        // useless
-        $description = '';
-        $settings    = '';
-        $password    = '';
-
         $ip_address = $_SERVER[ 'REMOTE_ADDR' ];
         $room_token = hash( 'sha256', $room_url . time() ) . rand( 1, 100 );
         if ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $_SERVER ) ) {
@@ -43,7 +38,7 @@ class Swirkz
         }
 
         // query that create room
-        if ( $link->query( "INSERT INTO `rooms` (`id`, `url`, `description`, `settings`, `password`, `create_date`, `admin_id`, `admin_ip`, `room_token`) VALUES (NULL, '$room_url', '$description', '$settings', '$password', CURRENT_TIMESTAMP, '0', '$ip_address', '$room_token')" ) ) {
+        if ( $link->query( "INSERT INTO `rooms` (`id`, `url`, `create_date`, `admin_id`, `admin_ip`, `room_token`) VALUES (NULL, '$room_url', CURRENT_TIMESTAMP, '0', '$ip_address', '$room_token')" ) ) {
             $room_id       = $link->insert_id;
             $message_token = hash( 'sha256', $room_url . '1' . time() ) . rand( 1, 100 );
             if ( $link->query( "INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `user_nickname`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, 'Welcome, say `Hello`', '$room_id', '$room_url', '0', 'Swirkz', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')" ) ) {
@@ -55,9 +50,9 @@ class Swirkz
             return false;
         }
     }
-	
-	
-	
+
+
+
 	/**
      * Insert into database new room
      * @param {mysqli} $link
@@ -72,13 +67,13 @@ class Swirkz
                 // grab numeric room_id
                 $room_data  = $result->fetch_assoc();
                 $room_id    = $room_data[ 'id' ];
-				
+
 				 // create new one
 				$ip_address = $_SERVER[ 'REMOTE_ADDR' ];
 				if ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $_SERVER ) ) {
 					$ip_address = array_pop( explode( ',', $_SERVER[ 'HTTP_X_FORWARDED_FOR' ] ) );
 				}
-				
+
 				if($result=$link->query("SELECT nickname FROM users WHERE room_id='$room_id' AND  ip='$ip_address' AND room_url='$room_url'")) {
 					if($result->num_rows>0) {
 							// grab nickname

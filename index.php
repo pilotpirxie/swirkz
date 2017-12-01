@@ -82,8 +82,8 @@ $router->map( 'POST', '[*:room_name]/save-nickname', function( $room_name ) use 
     if ( isset( $_POST[ 'room_name' ], $_POST[ 'nickname' ] ) && !empty( $_POST[ 'room_name' ] ) && !empty( $_POST[ 'nickname' ] ) ) {
 
         // grab info
-        $room_name = $_POST[ 'room_name' ];
-        $nickname  = $_POST[ 'nickname' ];
+        $room_name = htmlspecialchars($_POST[ 'room_name' ]);
+        $nickname  = htmlspecialchars($_POST[ 'nickname' ]);
 
         if ( $swirkz->createUser( $mysqli, $room_name, $nickname ) ) {
             if ( ( $settings = $swirkz->getSettings( $mysqli, $room_name, $nickname ) ) !== false ) {
@@ -108,10 +108,10 @@ $router->map( 'POST', '[*:room_name]/check-user', function( $room_name ) use ($m
 	 if ( isset( $_POST[ 'room_url' ], $_POST[ 'nickname' ] , $_POST[ 'user_token' ] , $_POST[ 'room_token' ] ) && !empty( $_POST[ 'room_url' ] ) && !empty( $_POST[ 'nickname' ] )  && !empty( $_POST[ 'user_token' ] )  && !empty( $_POST[ 'room_token' ] ) ) {
 
         // grab info
-        $room_token = $_POST[ 'room_token' ];
-        $nickname  = $_POST[ 'nickname' ];
-        $room_url  = $_POST[ 'room_url' ];
-        $user_token  = $_POST[ 'user_token' ];
+        $room_token = htmlspecialchars($_POST[ 'room_token' ]);
+        $nickname  = htmlspecialchars($_POST[ 'nickname' ]);
+        $room_url  = htmlspecialchars($_POST[ 'room_url' ]);
+        $user_token  = htmlspecialchars($_POST[ 'user_token' ]);
 		$room_url_current = ltrim($room_name,'/');
 		if($room_url==$room_url_current){
 			if ( ( $settings = $swirkz->getSettings( $mysqli, $room_url_current, $nickname ) ) !== false ) {
@@ -132,8 +132,8 @@ $router->map( 'POST', '[*:room_name]/check-user', function( $room_name ) use ($m
 				}
 			} else {
 				echo '{"status":"failed-2"}';
-				exit;	
-			}	
+				exit;
+			}
 		}
     } else {
         echo '{"status":"failed-1"}';
@@ -147,9 +147,9 @@ $router->map( 'POST', '[*:room_name]/get-messages', function( $room_name ) use (
     if ( isset( $_POST[ 'room_name' ], $_POST[ 'room_token' ], $_POST[ 'latest_message_id' ] ) && !empty( $_POST[ 'room_name' ] ) && !empty( $_POST[ 'room_token' ] ) && ( !empty( $_POST[ 'latest_message_id' ] ) || $_POST[ 'latest_message_id' ] == 0 ) ) {
 
         // grab info
-        $room_name         = $_POST[ 'room_name' ];
-        $room_token        = $_POST[ 'room_token' ];
-        $latest_message_id = $_POST[ 'latest_message_id' ];
+        $room_name         = htmlspecialchars($_POST[ 'room_name' ]);
+        $room_token        = htmlspecialchars($_POST[ 'room_token' ]);
+        $latest_message_id = htmlspecialchars($_POST[ 'latest_message_id' ]);
 
         if ( $swirkz->roomExist( $mysqli, $room_name ) ) {
             if ( ( $messages = $swirkz->getMessages( $mysqli, $room_name, $room_token, $latest_message_id ) ) !== false ) {
@@ -174,12 +174,12 @@ $router->map( 'POST', '[*:room_name]/send-message', function( $room_name ) use (
     if ( isset( $_POST[ 'room_name' ], $_POST[ 'room_token' ], $_POST[ 'content' ], $_POST[ 'user_id' ], $_POST[ 'user_token' ], $_POST[ 'nickname' ] ) && !empty( $_POST[ 'room_name' ] ) && !empty( $_POST[ 'room_token' ] ) && !empty( $_POST[ 'content' ] ) && !empty( $_POST[ 'user_id' ] ) && !empty( $_POST[ 'user_token' ] ) && !empty( $_POST[ 'nickname' ] ) ) {
 
         // grab info and make the secure
-        $room_name  = $_POST[ 'room_name' ];
-        $room_token = $_POST[ 'room_token' ];
+        $room_name  = htmlspecialchars($_POST[ 'room_name' ]);
+        $room_token = htmlspecialchars($_POST[ 'room_token' ]);
         $content    = $_POST[ 'content' ];
-        $user_id    = $_POST[ 'user_id' ];
-        $user_token = $_POST[ 'user_token' ];
-        $nickname   = $_POST[ 'nickname' ];
+        $user_id    = htmlspecialchars($_POST[ 'user_id' ]);
+        $user_token = htmlspecialchars($_POST[ 'user_token' ]);
+        $nickname   = htmlspecialchars($_POST[ 'nickname' ]);
 
         if ( $swirkz->roomExist( $mysqli, $room_name ) ) {
             if ( ( $status = $swirkz->sendMessage( $mysqli, $room_name, $room_token, $content, $user_id, $user_token, $nickname ) ) !== false ) {
