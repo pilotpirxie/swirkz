@@ -33,21 +33,10 @@
                 <div class="panel-body">
                     <div class="list-group">
                         <div style="height: 540px;">
-<<<<<<< HEAD
-
-                            <form method="post" action="auth/create_new.php">
-                                <h3>Help</h3>
-                                <p>
-
-
-                                </p>
-                            </form>
-=======
                                 <h3>Emoji</h3>
                                 <p
                                 You can use emojis UTF-8 and emojis abbreviations like <pre>:)</pre>, <pre>:D</pre> and many others. You may also want to insert some top-notch BBCODEs e.g. <pre>[b]</pre>, <pre>[u]</pre>.
                                 </p>
->>>>>>> origin/d
                         </div>
                     </div>
                 </div>

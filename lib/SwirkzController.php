@@ -31,14 +31,6 @@ class Swirkz
      * @return {bool} status
      */
     function createRoom( $link, $room_url, $data ) {
-<<<<<<< HEAD
-        // useless
-        $description = '';
-        $settings    = '';
-        $password    = '';
-
-=======
->>>>>>> origin/d
         $ip_address = $_SERVER[ 'REMOTE_ADDR' ];
         $room_token = hash( 'sha256', $room_url . time() ) . rand( 1, 100 );
         if ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $_SERVER ) ) {
@@ -46,11 +38,7 @@ class Swirkz
         }
 
         // query that create room
-<<<<<<< HEAD
-        if ( $link->query( "INSERT INTO `rooms` (`id`, `url`, `description`, `settings`, `password`, `create_date`, `admin_id`, `admin_ip`, `room_token`) VALUES (NULL, '$room_url', '$description', '$settings', '$password', CURRENT_TIMESTAMP, '0', '$ip_address', '$room_token')" ) ) {
-=======
         if ( $link->query( "INSERT INTO `rooms` (`id`, `url`, `create_date`, `admin_id`, `admin_ip`, `room_token`) VALUES (NULL, '$room_url', CURRENT_TIMESTAMP, '0', '$ip_address', '$room_token')" ) ) {
->>>>>>> origin/d
             $room_id       = $link->insert_id;
             $message_token = hash( 'sha256', $room_url . '1' . time() ) . rand( 1, 100 );
             if ( $link->query( "INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `user_nickname`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, 'Welcome, say `Hello`', '$room_id', '$room_url', '0', 'Swirkz', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')" ) ) {
@@ -63,8 +51,6 @@ class Swirkz
         }
     }
 
-<<<<<<< HEAD
-=======
 
 
 	/**
@@ -108,7 +94,6 @@ class Swirkz
 		}
     }
 
->>>>>>> origin/d
     /**
      * Insert new user into database and make the admin if not exist
      * @param {mysqli} $link
@@ -284,11 +269,7 @@ class Swirkz
                     $message_token = hash( 'sha256', $room_id . time() ) . rand( 1, 100 );
                     $user_nickname = $data[ 'userData' ][ 'nickname' ];
 
-<<<<<<< HEAD
-                    if ( $result = $link->query( "INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `user_nickname`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, '$content', '$room_id', '$room_url', '$user_id', '$user_nickname', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')" ) ) {
-=======
                     if ( $result = $link->query( "INSERT INTO `messages` (`id`, `content`, `room_id`, `room_url`, `user_id`, `user_nickname`, `create_date`, `status`, `message_token`, `room_token`) VALUES (NULL, '$content', '$room_id', '$room_url', '$user_id', '$user_nickname', CURRENT_TIMESTAMP, '0', '$message_token', '$room_token')" )) {
->>>>>>> origin/d
                         return true;
                     } else {
                         return false;
