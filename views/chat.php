@@ -47,6 +47,7 @@
                                 <br><button class="btn btn-info form-control" type="submit" id="login_button" onclick="sendMessage()">Send</button>
                             </div>
                         </div>
+<<<<<<< HEAD
 
                     </div>
                 </div>
@@ -185,5 +186,21 @@
 
 
     </script>
+=======
+
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; color: #eee;"> [b]<b>bold</b>[/b] [i]<i>italic</i>[/i] [u]<u>underline</u>[/u] [code]<code>code</code>[/code]</p>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="../assets/scripts/convertContent.js"></script>
+    <script>ROOM_ID = "<?= $room_id ?>";</script>
+    <script src="../assets/scripts/chat.js"></script>
+>>>>>>> origin/d
 </body>
 </html>

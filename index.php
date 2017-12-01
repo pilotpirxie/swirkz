@@ -24,8 +24,13 @@ $router->map( 'GET', '/', function( ) {
 $router->map( 'GET', '/help', function( ) {
     require_once 'views/help.php';
 } );
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> origin/d
 // redirect to valid URL
 $router->map( 'POST', '/new', function( ) use ($location) {
     if ( isset( $_POST[ 'room_id' ] ) && !empty( $_POST[ 'room_id' ] ) ) {
@@ -35,6 +40,7 @@ $router->map( 'POST', '/new', function( ) use ($location) {
         exit;
     }
 } );
+<<<<<<< HEAD
 
 // 404 error - all other matches
 $router->map( 'GET', '/[*]/[*]', function( ) {
@@ -42,6 +48,15 @@ $router->map( 'GET', '/[*]/[*]', function( ) {
     exit;
 } );
 
+=======
+
+// 404 error - all other matches
+$router->map( 'GET', '/[*]/[*]', function( ) {
+    echo 'Eror 404';
+    exit;
+} );
+
+>>>>>>> origin/d
 // go to exist chat
 $router->map( 'GET', '/[*:room_id]', function( $room_id ) use ($mysqli, $swirkz, $location) {
     if ( $swirkz->roomExist( $mysqli, $room_id ) ) {
@@ -82,8 +97,13 @@ $router->map( 'POST', '[*:room_name]/save-nickname', function( $room_name ) use 
     if ( isset( $_POST[ 'room_name' ], $_POST[ 'nickname' ] ) && !empty( $_POST[ 'room_name' ] ) && !empty( $_POST[ 'nickname' ] ) ) {
 
         // grab info
+<<<<<<< HEAD
         $room_name = $_POST[ 'room_name' ];
         $nickname  = $_POST[ 'nickname' ];
+=======
+        $room_name = htmlspecialchars($_POST[ 'room_name' ]);
+        $nickname  = htmlspecialchars($_POST[ 'nickname' ]);
+>>>>>>> origin/d
 
         if ( $swirkz->createUser( $mysqli, $room_name, $nickname ) ) {
             if ( ( $settings = $swirkz->getSettings( $mysqli, $room_name, $nickname ) ) !== false ) {
@@ -103,6 +123,7 @@ $router->map( 'POST', '[*:room_name]/save-nickname', function( $room_name ) use 
     }
 } );
 
+<<<<<<< HEAD
 // download messages
 $router->map( 'POST', '[*:room_name]/get-messages', function( $room_name ) use ($mysqli, $location, $swirkz) {
     if ( isset( $_POST[ 'room_name' ], $_POST[ 'room_token' ], $_POST[ 'latest_message_id' ] ) && !empty( $_POST[ 'room_name' ] ) && !empty( $_POST[ 'room_token' ] ) && ( !empty( $_POST[ 'latest_message_id' ] ) || $_POST[ 'latest_message_id' ] == 0 ) ) {
@@ -151,11 +172,103 @@ $router->map( 'POST', '[*:room_name]/send-message', function( $room_name ) use (
             }
         }
 
+=======
+//check user
+$router->map( 'POST', '[*:room_name]/check-user', function( $room_name ) use ($mysqli, $location, $swirkz) {
+	 if ( isset( $_POST[ 'room_url' ], $_POST[ 'nickname' ] , $_POST[ 'user_token' ] , $_POST[ 'room_token' ] ) && !empty( $_POST[ 'room_url' ] ) && !empty( $_POST[ 'nickname' ] )  && !empty( $_POST[ 'user_token' ] )  && !empty( $_POST[ 'room_token' ] ) ) {
+
+        // grab info
+        $room_token = htmlspecialchars($_POST[ 'room_token' ]);
+        $nickname  = htmlspecialchars($_POST[ 'nickname' ]);
+        $room_url  = htmlspecialchars($_POST[ 'room_url' ]);
+        $user_token  = htmlspecialchars($_POST[ 'user_token' ]);
+		$room_url_current = ltrim($room_name,'/');
+		if($room_url==$room_url_current){
+			if ( ( $settings = $swirkz->getSettings( $mysqli, $room_url_current, $nickname ) ) !== false ) {
+                echo $settings;
+                exit;
+            } else {
+                echo '{"status":"failed-3"}';
+                exit;
+            }
+		} else {
+			if($nickname_true = $swirkz->findUser($mysqli,$room_url_current)) {
+				if ( ( $settings = $swirkz->getSettings( $mysqli, $room_url_current, $nickname_true ) ) !== false ) {
+					echo $settings;
+					exit;
+				} else {
+					echo '{"status":"failed-3"}';
+					exit;
+				}
+			} else {
+				echo '{"status":"failed-2"}';
+				exit;
+			}
+		}
+    } else {
+        echo '{"status":"failed-1"}';
+        exit;
+    }
+});
+
+
+// download messages
+$router->map( 'POST', '[*:room_name]/get-messages', function( $room_name ) use ($mysqli, $location, $swirkz) {
+    if ( isset( $_POST[ 'room_name' ], $_POST[ 'room_token' ], $_POST[ 'latest_message_id' ] ) && !empty( $_POST[ 'room_name' ] ) && !empty( $_POST[ 'room_token' ] ) && ( !empty( $_POST[ 'latest_message_id' ] ) || $_POST[ 'latest_message_id' ] == 0 ) ) {
+
+        // grab info
+        $room_name         = htmlspecialchars($_POST[ 'room_name' ]);
+        $room_token        = htmlspecialchars($_POST[ 'room_token' ]);
+        $latest_message_id = htmlspecialchars($_POST[ 'latest_message_id' ]);
+
+        if ( $swirkz->roomExist( $mysqli, $room_name ) ) {
+            if ( ( $messages = $swirkz->getMessages( $mysqli, $room_name, $room_token, $latest_message_id ) ) !== false ) {
+                echo $messages;
+            } else {
+                echo '{"status":"failed-2"}';
+                exit;
+            }
+        } else {
+            echo '{"status":"failed-3"}';
+            exit;
+        }
+
+>>>>>>> origin/d
     } else {
         echo '{"status":"failed-1"}';
         exit;
     }
 } );
+<<<<<<< HEAD
+=======
+
+// send message
+$router->map( 'POST', '[*:room_name]/send-message', function( $room_name ) use ($mysqli, $location, $swirkz) {
+    if ( isset( $_POST[ 'room_name' ], $_POST[ 'room_token' ], $_POST[ 'content' ], $_POST[ 'user_id' ], $_POST[ 'user_token' ], $_POST[ 'nickname' ] ) && !empty( $_POST[ 'room_name' ] ) && !empty( $_POST[ 'room_token' ] ) && !empty( $_POST[ 'content' ] ) && !empty( $_POST[ 'user_id' ] ) && !empty( $_POST[ 'user_token' ] ) && !empty( $_POST[ 'nickname' ] ) ) {
+
+        // grab info and make the secure
+        $room_name  = htmlspecialchars($_POST[ 'room_name' ]);
+        $room_token = htmlspecialchars($_POST[ 'room_token' ]);
+        $content    = $_POST[ 'content' ];
+        $user_id    = htmlspecialchars($_POST[ 'user_id' ]);
+        $user_token = htmlspecialchars($_POST[ 'user_token' ]);
+        $nickname   = htmlspecialchars($_POST[ 'nickname' ]);
+
+        if ( $swirkz->roomExist( $mysqli, $room_name ) ) {
+            if ( ( $status = $swirkz->sendMessage( $mysqli, $room_name, $room_token, $content, $user_id, $user_token, $nickname ) ) !== false ) {
+                echo '{"status":"success"}';
+            } else {
+                echo '{"status":"failed-2"}';
+                exit;
+            }
+        }
+
+    } else {
+        echo '{"status":"failed-1"}';
+        exit;
+    }
+} );
+>>>>>>> origin/d
 
 $match = $router->match();
 
