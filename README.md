@@ -18,11 +18,16 @@ and import schema from config/swirkz.sql:
 ```
 mysql -u username -p database_name < swirkz.sql
 ```
-And finally, insert your config info in config/db_con.php
+And finally, insert your config info in config/db_conn.php
 ```
 <?php
 $db_host = 'localhost';
 $db_name = 'swirkz';
 $db_user = 'root';
 $db_pass = '';
+```
+
+License
+```
+MIT
 ```
