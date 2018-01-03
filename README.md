@@ -4,11 +4,11 @@ Swirkz Chat is a collaborated chat created by students to improve their programm
 ### Quick Start
 Download files:
 ```
-$ git clone git@github.com:pilotpirxie/novelist-js.git
+$ git clone git@github.com:pilotpirxie/swirkz.git
 ```
 or:
 ```
-$ wget https://github.com/pilotpirxie/novelist-js/archive/v1.0.0.zip
+$ wget https://github.com/pilotpirxie/swirkz/archive/1.0.zip
 ```
 Create database:
 ```
