@@ -1,5 +1,5 @@
 # Swirkz
-Swirkz Chat is a collaborated chat created by students to improve their programming skills. Use on your own risk.
+Swirkz Chat is a collaborated chat created by students to improve their programming skills. Use on your own risk 😉
 
 ### Quick Start
 Download files:
